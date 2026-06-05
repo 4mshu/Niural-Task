@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payonroll — AI Contract Compliance Monitor</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+    .step { display: none; }
+    .step.active { display: block; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .spinner {
+      border: 3px solid #e5e7eb;
+      border-top-color: #6366f1;
+      border-radius: 50%;
+      width: 32px; height: 32px;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .badge-clear  { background:#dcfce7; color:#166534; border:1px solid #bbf7d0; }
+    .badge-hold   { background:#fef3c7; color:#92400e; border:1px solid #fde68a; }
+    .badge-queued { background:#e0e7ff; color:#3730a3; border:1px solid #c7d2fe; }
+    .badge-reject { background:#fee2e2; color:#991b1b; border:1px solid #fecaca; }
+    .comparison-col { flex:1; padding:16px; }
+    .modal-overlay {
+      position:fixed; inset:0; background:rgba(0,0,0,0.4);
+      display:flex; align-items:center; justify-content:center; z-index:50;
+    }
+    .modal-overlay.hidden { display:none; }
+    .thread-msg { border-left:3px solid #6366f1; padding-left:12px; margin-bottom:12px; }
+    .thread-msg.system     { border-left-color:#9ca3af; }
+    .thread-msg.contractor { border-left-color:#f59e0b; }
+    .thread-msg.client     { border-left-color:#6366f1; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+  <!-- Header -->
+  <header class="bg-white border-b border-gray-200 px-6 py-4 flex items-center gap-3">
+    <div class="flex items-center gap-2">
+      <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
+        <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+        </svg>
+      </div>
+      <span class="font-semibold text-gray-900 text-lg">Payonroll</span>
+    </div>
+    <div class="h-5 w-px bg-gray-300"></div>
+    <span class="text-sm text-gray-500">AI Contract Compliance Monitor — Prototype</span>
+    <span class="ml-auto text-xs bg-indigo-50 text-indigo-700 border border-indigo-200 px-2 py-1 rounded-full font-medium">v1 Draft</span>
+  </header>
+
+  <!-- Tab Nav — 3 tabs -->
+  <div class="bg-white border-b border-gray-200 px-6">
+    <div class="flex gap-0 max-w-5xl mx-auto">
+      <button onclick="switchTab(1)" id="tab-btn-1"
+        class="tab-btn px-5 py-3.5 text-sm font-medium border-b-2 border-indigo-600 text-indigo-600 -mb-px transition-colors">
+        Contractor — Happy Path
+      </button>
+      <button onclick="switchTab(2)" id="tab-btn-2"
+        class="tab-btn px-5 py-3.5 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 -mb-px transition-colors">
+        Contractor — Error Path
+      </button>
+      <button onclick="switchTab(3)" id="tab-btn-3"
+        class="tab-btn px-5 py-3.5 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 -mb-px transition-colors">
+        Client View
+      </button>
+    </div>
+  </div>
+
+  <main class="max-w-5xl mx-auto px-6 py-8">
+
+    <!-- ═══════════════════════════════════════
+         TAB 1 — CONTRACTOR HAPPY PATH
+    ═══════════════════════════════════════ -->
+    <div id="tab-1" class="tab-content active">
+
+      <!-- Step 1: Invoice Form -->
+      <div id="t1-step-1" class="step active">
+        <div class="mb-6">
+          <p class="text-xs text-gray-500 uppercase tracking-wide font-medium mb-1">Contractor View · Happy Path</p>
+          <h2 class="text-xl font-semibold text-gray-900">Submit Invoice</h2>
+          <p class="text-sm text-gray-500 mt-1">Review your invoice before submission. The AI compliance check runs automatically.</p>
+        </div>
+        <div class="grid grid-cols-3 gap-6">
+          <div class="col-span-2 space-y-5">
+            <div class="bg-white rounded-xl border border-gray-200 p-5">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-sm font-semibold text-gray-700">Contract Details</h3>
+                <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded font-mono">#CT-2024-0891</span>
+              </div>
+              <div class="grid grid-cols-2 gap-4 text-sm">
+                <div><span class="text-gray-400">Contractor</span><p class="font-medium text-gray-900 mt-0.5">Alex Rivera</p></div>
+                <div><span class="text-gray-400">Client</span><p class="font-medium text-gray-900 mt-0.5">Meridian Digital Co.</p></div>
+                <div><span class="text-gray-400">Contract Type</span><p class="font-medium text-gray-900 mt-0.5">Fixed-Fee</p></div>
+                <div><span class="text-gray-400">Signed</span><p class="font-medium text-gray-900 mt-0.5">Mar 14, 2024</p></div>
+                <div class="col-span-2"><span class="text-gray-400">Scope</span><p class="font-medium text-gray-900 mt-0.5">Brand Identity & Website Redesign</p></div>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl border border-gray-200 p-5">
+              <h3 class="text-sm font-semibold text-gray-700 mb-3">Milestone Reference</h3>
+              <div class="flex items-center gap-3">
+                <div class="flex-1 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900">Phase 1 — Design & Wireframes</div>
+                <span class="text-xs text-gray-400">of 3 milestones</span>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl border border-gray-200 p-5">
+              <h3 class="text-sm font-semibold text-gray-700 mb-3">Invoice Line Items</h3>
+              <table class="w-full text-sm">
+                <thead><tr class="text-gray-400 text-xs border-b border-gray-100"><th class="text-left pb-2 font-medium">Description</th><th class="text-right pb-2 font-medium">Amount</th></tr></thead>
+                <tbody class="divide-y divide-gray-50">
+                  <tr><td class="py-2.5 text-gray-700">Brand Strategy & Discovery</td><td class="py-2.5 text-right text-gray-900 font-medium">$4,200.00</td></tr>
+                  <tr><td class="py-2.5 text-gray-700">UI Design & Prototyping</td><td class="py-2.5 text-right text-gray-900 font-medium">$4,800.00</td></tr>
+                  <tr><td class="py-2.5 text-gray-700">Project Management</td><td class="py-2.5 text-right text-gray-900 font-medium">$2,200.00</td></tr>
+                </tbody>
+                <tfoot><tr class="border-t-2 border-gray-200"><td class="pt-3 font-semibold text-gray-900">Total</td><td class="pt-3 text-right font-bold text-gray-900 text-base">$11,200.00</td></tr></tfoot>
+              </table>
+            </div>
+          </div>
+          <div class="space-y-4">
+            <div class="bg-white rounded-xl border border-gray-200 p-4">
+              <p class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">Invoice Period</p>
+              <p class="text-sm text-gray-900 font-medium">Apr 1 – Apr 30, 2024</p>
+            </div>
+            <div class="bg-white rounded-xl border border-gray-200 p-4">
+              <p class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">Currency</p>
+              <p class="text-sm text-gray-900 font-medium">USD</p>
+            </div>
+            <div class="bg-indigo-50 border border-indigo-100 rounded-xl p-4">
+              <div class="flex gap-2">
+                <svg class="w-4 h-4 text-indigo-500 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <p class="text-xs text-indigo-700">"Review Invoice" runs the AI compliance check against your signed contract before submission.</p>
+              </div>
+            </div>
+            <button onclick="runCheck('happy')" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-3 rounded-xl transition-colors flex items-center justify-center gap-2">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+              Review Invoice
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 1.5: Spinner -->
+      <div id="t1-step-1-5" class="step">
+        <div class="flex flex-col items-center justify-center py-24 gap-4">
+          <div class="spinner"></div>
+          <p class="text-sm text-gray-500">Running AI compliance check against contract #CT-2024-0891…</p>
+        </div>
+      </div>
+
+      <!-- Step 2: Pre-check Clear -->
+      <div id="t1-step-2" class="step">
+        <div class="mb-6">
+          <p class="text-xs text-gray-500 uppercase tracking-wide font-medium mb-1">Contractor View · Happy Path</p>
+          <h2 class="text-xl font-semibold text-gray-900">Pre-check Result</h2>
+        </div>
+        <div class="bg-green-50 border border-green-200 rounded-xl p-4 mb-5 flex items-start gap-3">
+          <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center shrink-0">
+            <svg class="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <div>
+            <p class="font-semibold text-green-800">Your invoice matches the contract terms</p>
+            <p class="text-sm text-green-700 mt-0.5">No mismatches detected. You're clear to submit.</p>
+          </div>
+          <span class="ml-auto text-xs bg-green-100 text-green-700 px-2.5 py-1 rounded-full font-semibold whitespace-nowrap">Confidence 97%</span>
+        </div>
+        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden mb-5">
+          <div class="px-5 py-3 bg-gray-50 border-b border-gray-200">
+            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Contract vs. Invoice Comparison</p>
+          </div>
+          <div class="flex divide-x divide-gray-100">
+            <div class="comparison-col"><p class="text-xs text-gray-400 font-medium mb-1">Contract Terms</p><p class="text-2xl font-bold text-gray-900">$11,200</p><p class="text-xs text-gray-400 mt-1">Fixed-fee · #CT-2024-0891</p></div>
+            <div class="comparison-col"><p class="text-xs text-gray-400 font-medium mb-1">Your Invoice</p><p class="text-2xl font-bold text-gray-900">$11,200</p><p class="text-xs text-gray-400 mt-1">#INV-2024-1147 (draft)</p></div>
+            <div class="comparison-col"><p class="text-xs text-gray-400 font-medium mb-1">Deviation</p><p class="text-2xl font-bold text-green-600">$0</p><p class="text-xs text-green-500 mt-1">No deviation</p></div>
+          </div>
+          <div class="px-5 py-3 border-t border-gray-100 flex items-center gap-2">
+            <svg class="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span class="text-sm text-gray-700">Milestone match: <span class="font-medium">Phase 1 — Design & Wireframes</span></span>
+          </div>
+        </div>
+        <div class="flex gap-3">
+          <button onclick="showStep('t1', 1)" class="px-4 py-2.5 text-sm text-gray-600 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors">Back to Edit</button>
+          <button onclick="showStep('t1', 3)" class="flex-1 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors flex items-center justify-center gap-2">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+            Submit Invoice
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 3: Confirmation -->
+      <div id="t1-step-3" class="step">
+        <div class="flex flex-col items-center justify-center py-16 text-center max-w-md mx-auto">
+          <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+            <svg class="w-9 h-9 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <h2 class="text-xl font-bold text-gray-900 mb-2">Invoice Submitted</h2>
+          <p class="text-gray-500 text-sm mb-6">Your invoice is awaiting client approval. You'll be notified when it's reviewed.</p>
+          <div class="w-full bg-white rounded-xl border border-gray-200 text-left p-5 space-y-3 text-sm mb-6">
+            <div class="flex justify-between"><span class="text-gray-400">Invoice ID</span><span class="font-mono text-gray-900">#INV-2024-1147</span></div>
+            <div class="flex justify-between"><span class="text-gray-400">Submitted</span><span class="text-gray-900">May 1, 2024 at 10:42 AM</span></div>
+            <div class="flex justify-between"><span class="text-gray-400">Amount</span><span class="font-semibold text-gray-900">$11,200.00</span></div>
+            <div class="flex justify-between items-center"><span class="text-gray-400">Status</span><span class="badge-clear px-2.5 py-1 rounded-full text-xs font-semibold">Pending Approval</span></div>
+            <div class="flex justify-between items-center"><span class="text-gray-400">Compliance</span><span class="text-green-600 font-medium text-xs flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Matches Contract</span></div>
+          </div>
+          <button onclick="switchTab(1)" class="text-sm text-indigo-600 hover:underline">Start over</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         TAB 2 — CONTRACTOR ERROR PATH
+    ═══════════════════════════════════════ -->
+    <div id="tab-2" class="tab-content">
+
+      <!-- Step 1: Invoice Form -->
+      <div id="t2-step-1" class="step active">
+        <div class="mb-6">
+          <p class="text-xs text-gray-500 uppercase tracking-wide font-medium mb-1">Contractor View · Error Path</p>
+          <h2 class="text-xl font-semibold text-gray-900">Submit Invoice</h2>
+          <p class="text-sm text-gray-500 mt-1">Review your invoice before submission. The AI compliance check runs automatically.</p>
+        </div>
+        <div class="grid grid-cols-3 gap-6">
+          <div class="col-span-2 space-y-5">
+            <div class="bg-white rounded-xl border border-gray-200 p-5">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-sm font-semibold text-gray-700">Contract Details</h3>
+                <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded font-mono">#CT-2024-0891</span>
+              </div>
+              <div class="grid grid-cols-2 gap-4 text-sm">
+                <div><span class="text-gray-400">Contractor</span><p class="font-medium text-gray-900 mt-0.5">Alex Rivera</p></div>
+                <div><span class="text-gray-400">Client</span><p class="font-medium text-gray-900 mt-0.5">Meridian Digital Co.</p></div>
+                <div><span class="text-gray-400">Contract Type</span><p class="font-medium text-gray-900 mt-0.5">Fixed-Fee</p></div>
+                <div><span class="text-gray-400">Signed</span><p class="font-medium text-gray-900 mt-0.5">Mar 14, 2024</p></div>
+                <div class="col-span-2"><span class="text-gray-400">Scope</span><p class="font-medium text-gray-900 mt-0.5">Brand Identity & Website Redesign</p></div>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl border border-gray-200 p-5">
+              <h3 class="text-sm font-semibold text-gray-700 mb-3">Milestone Reference</h3>
+              <div class="bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900">Phase 1 — Design & Wireframes</div>
+            </div>
+            <div class="bg-white rounded-xl border border-gray-200 p-5">
+              <h3 class="text-sm font-semibold text-gray-700 mb-3">Invoice Line Items</h3>
+              <table class="w-full text-sm">
+                <thead><tr class="text-gray-400 text-xs border-b border-gray-100"><th class="text-left pb-2 font-medium">Description</th><th class="text-right pb-2 font-medium">Amount</th></tr></thead>
+                <tbody class="divide-y divide-gray-50">
+                  <tr><td class="py-2.5 text-gray-700">Brand Strategy & Discovery</td><td class="py-2.5 text-right text-gray-900 font-medium">$6,000.00</td></tr>
+                  <tr><td class="py-2.5 text-gray-700">UI Design & Prototyping</td><td class="py-2.5 text-right text-gray-900 font-medium">$5,800.00</td></tr>
+                  <tr><td class="py-2.5 text-gray-700">Project Management</td><td class="py-2.5 text-right text-gray-900 font-medium">$2,200.00</td></tr>
+                </tbody>
+                <tfoot><tr class="border-t-2 border-gray-200"><td class="pt-3 font-semibold text-gray-900">Total</td><td class="pt-3 text-right font-bold text-gray-900 text-base">$14,000.00</td></tr></tfoot>
+              </table>
+            </div>
+          </div>
+          <div class="space-y-4">
+            <div class="bg-white rounded-xl border border-gray-200 p-4">
+              <p class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">Invoice Period</p>
+              <p class="text-sm text-gray-900 font-medium">Apr 1 – Apr 30, 2024</p>
+            </div>
+            <div class="bg-white rounded-xl border border-gray-200 p-4">
+              <p class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">Currency</p>
+              <p class="text-sm text-gray-900 font-medium">USD</p>
+            </div>
+            <div class="bg-indigo-50 border border-indigo-100 rounded-xl p-4">
+              <div class="flex gap-2">
+                <svg class="w-4 h-4 text-indigo-500 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <p class="text-xs text-indigo-700">"Review Invoice" runs the AI compliance check against your signed contract before submission.</p>
+              </div>
+            </div>
+            <button onclick="runCheck('error')" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-3 rounded-xl transition-colors flex items-center justify-center gap-2">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+              Review Invoice
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 1.5: Spinner -->
+      <div id="t2-step-1-5" class="step">
+        <div class="flex flex-col items-center justify-center py-24 gap-4">
+          <div class="spinner"></div>
+          <p class="text-sm text-gray-500">Running AI compliance check against contract #CT-2024-0891…</p>
+        </div>
+      </div>
+
+      <!-- Step 2: Flag-Hold Result -->
+      <div id="t2-step-2" class="step">
+        <div class="mb-6">
+          <p class="text-xs text-gray-500 uppercase tracking-wide font-medium mb-1">Contractor View · Error Path</p>
+          <h2 class="text-xl font-semibold text-gray-900">Pre-check Result</h2>
+        </div>
+        <div class="bg-red-50 border border-red-200 rounded-xl p-4 mb-5 flex items-start gap-3">
+          <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center shrink-0">
+            <svg class="w-5 h-5 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+          </div>
+          <div class="flex-1">
+            <div class="flex items-center gap-2 mb-0.5">
+              <p class="font-semibold text-red-800">Mismatch Detected</p>
+              <span class="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-bold uppercase tracking-wide">Flag-Hold</span>
+            </div>
+            <p class="text-sm text-red-700">Your invoice amount does not match the contracted fixed fee. Review the details below before submitting.</p>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl border border-red-200 overflow-hidden mb-5">
+          <div class="px-5 py-3 bg-red-50 border-b border-red-100 flex items-center justify-between">
+            <p class="text-xs font-semibold text-red-700 uppercase tracking-wide">Contract vs. Invoice Comparison</p>
+            <span class="text-xs text-gray-500">Confidence 94%</span>
+          </div>
+          <div class="flex divide-x divide-gray-100">
+            <div class="comparison-col"><p class="text-xs text-gray-400 font-medium mb-1">Contract Terms</p><p class="text-2xl font-bold text-gray-900">$11,200</p><p class="text-xs text-gray-400 mt-1">Fixed-fee · #CT-2024-0891</p></div>
+            <div class="comparison-col"><p class="text-xs text-gray-400 font-medium mb-1">Your Invoice</p><p class="text-2xl font-bold text-red-600">$14,000</p><p class="text-xs text-gray-400 mt-1">#INV-2024-1148 (draft)</p></div>
+            <div class="comparison-col"><p class="text-xs text-gray-400 font-medium mb-1">Deviation</p><p class="text-2xl font-bold text-red-600">+$2,800</p><p class="text-xs text-red-500 mt-1">+25.0% over contract</p></div>
+          </div>
+          <div class="px-5 py-4 border-t border-gray-100 bg-amber-50">
+            <div class="flex gap-2">
+              <svg class="w-4 h-4 text-amber-600 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <p class="text-sm text-amber-800"><span class="font-semibold">Why this is flagged:</span> Your invoice total of $14,000 exceeds the contracted fixed fee of $11,200 by $2,800. The contract signed on March 14, 2024 specifies a total fixed fee of $11,200 for this engagement. Please verify this reflects your agreed terms before submitting.</p>
+            </div>
+          </div>
+        </div>
+        <div class="flex gap-3">
+          <button onclick="showStep('t2', 1)" class="flex-1 px-4 py-2.5 text-sm font-semibold text-gray-700 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors">Edit Invoice</button>
+          <button onclick="showStep('t2', 3)" class="flex-1 bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors flex items-center justify-center gap-2">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01"/></svg>
+            Submit Anyway
+          </button>
+        </div>
+        <p class="text-xs text-center text-gray-400 mt-2">Submitting a flagged invoice will alert your client before they can approve payment.</p>
+      </div>
+
+      <!-- Step 3: Submitted flagged -->
+      <div id="t2-step-3" class="step">
+        <div class="flex flex-col items-center justify-center py-16 text-center max-w-md mx-auto">
+          <div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mb-4">
+            <svg class="w-9 h-9 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+          </div>
+          <h2 class="text-xl font-bold text-gray-900 mb-2">Invoice Submitted — Flagged</h2>
+          <p class="text-gray-500 text-sm mb-6">Your invoice has been submitted. Your client will see the mismatch before approving payment.</p>
+          <div class="w-full bg-white rounded-xl border border-gray-200 text-left p-5 space-y-3 text-sm mb-4">
+            <div class="flex justify-between"><span class="text-gray-400">Invoice ID</span><span class="font-mono text-gray-900">#INV-2024-1148</span></div>
+            <div class="flex justify-between"><span class="text-gray-400">Submitted</span><span class="text-gray-900">May 1, 2024 at 10:53 AM</span></div>
+            <div class="flex justify-between"><span class="text-gray-400">Amount</span><span class="font-semibold text-gray-900">$14,000.00</span></div>
+            <div class="flex justify-between items-center"><span class="text-gray-400">Status</span><span class="badge-hold px-2.5 py-1 rounded-full text-xs font-semibold">Pending — Flagged</span></div>
+            <div class="flex justify-between items-center"><span class="text-gray-400">Compliance</span><span class="text-amber-600 font-medium text-xs flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01"/></svg>Flag-Hold: +$2,800 vs contract</span></div>
+          </div>
+          <div class="w-full bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-800 text-left mb-6">
+            <p class="font-medium mb-1">What happens next</p>
+            <p class="text-xs">Your client will see the contract vs. invoice discrepancy before approving. They may reject, approve with a reason, or open a dispute thread.</p>
+          </div>
+          <button onclick="switchTab(2)" class="text-sm text-indigo-600 hover:underline">Start over</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         TAB 3 — CLIENT VIEW (combined inbox)
+    ═══════════════════════════════════════ -->
+    <div id="tab-3" class="tab-content">
+
+      <!-- Step 1: Inbox — both invoices -->
+      <div id="t3-step-1" class="step active">
+        <div class="mb-6">
+          <p class="text-xs text-gray-500 uppercase tracking-wide font-medium mb-1">Client View · Meridian Digital Co.</p>
+          <h2 class="text-xl font-semibold text-gray-900">Invoice Inbox</h2>
+          <p class="text-sm text-gray-500 mt-1">Invoices pending your review and approval.</p>
+        </div>
+
+        <div class="space-y-3">
+          <!-- Card 1: Happy path — matches contract -->
+          <div id="card-1147" onclick="showStep('t3', 2)" class="bg-white rounded-xl border border-gray-200 p-5 hover:border-indigo-300 hover:shadow-sm cursor-pointer transition-all group">
+            <div class="flex items-start justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-700 font-bold text-sm">AR</div>
+                <div>
+                  <p class="font-semibold text-gray-900 group-hover:text-indigo-700 transition-colors">Alex Rivera</p>
+                  <p class="text-xs text-gray-400">Brand Identity & Website Redesign · Phase 1</p>
+                </div>
+              </div>
+              <div class="text-right">
+                <p class="font-bold text-gray-900 text-lg">$11,200.00</p>
+                <p class="text-xs text-gray-400 font-mono">#INV-2024-1147</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 mt-4 pt-4 border-t border-gray-100">
+              <span id="badge-1147" class="badge-clear px-2.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
+                <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                Matches Contract
+              </span>
+              <span class="text-xs text-gray-400">Contract #CT-2024-0891 · May 1, 2024</span>
+              <span class="ml-auto text-xs text-indigo-600 group-hover:underline">Review →</span>
+            </div>
+          </div>
+
+          <!-- Card 2: Error path — mismatch -->
+          <div id="card-1148" onclick="showStep('t3', 4)" class="bg-white rounded-xl border border-amber-300 p-5 hover:border-amber-400 hover:shadow-sm cursor-pointer transition-all group">
+            <div class="flex items-start justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-700 font-bold text-sm">AR</div>
+                <div>
+                  <p class="font-semibold text-gray-900 group-hover:text-amber-700 transition-colors">Alex Rivera</p>
+                  <p class="text-xs text-gray-400">Brand Identity & Website Redesign · Phase 1</p>
+                </div>
+              </div>
+              <div class="text-right">
+                <p class="font-bold text-gray-900 text-lg">$14,000.00</p>
+                <p class="text-xs text-gray-400 font-mono">#INV-2024-1148</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 mt-4 pt-4 border-t border-amber-100">
+              <span id="badge-1148" class="badge-hold px-2.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
+                <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01"/></svg>
+                Mismatch Detected — Review Required
+              </span>
+              <span class="text-xs text-gray-400">May 1, 2024</span>
+              <span class="ml-auto text-xs text-amber-600 group-hover:underline">Review →</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Happy path — Invoice Detail -->
+      <div id="t3-step-2" class="step">
+        <div class="mb-5 flex items-center gap-3">
+          <button onclick="goToInbox()" class="text-gray-400 hover:text-gray-600 transition-colors">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <div>
+            <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">Client View · Invoice #INV-2024-1147</p>
+            <h2 class="text-xl font-semibold text-gray-900">Alex Rivera — $11,200.00</h2>
+          </div>
+        </div>
+        <div class="bg-green-50 border border-green-200 rounded-xl p-4 mb-5 flex items-center gap-3">
+          <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center shrink-0">
+            <svg class="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <div>
+            <p class="font-semibold text-green-800">This invoice matches the signed contract</p>
+            <p class="text-sm text-green-700">AI check complete · Contract #CT-2024-0891 · Confidence 97%</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-5 mb-5">
+          <div class="col-span-2 space-y-4">
+            <div class="bg-white rounded-xl border border-gray-200 p-5">
+              <div class="grid grid-cols-2 gap-4 text-sm mb-4">
+                <div><span class="text-gray-400">From</span><p class="font-medium text-gray-900 mt-0.5">Alex Rivera</p></div>
+                <div><span class="text-gray-400">Invoice Date</span><p class="font-medium text-gray-900 mt-0.5">May 1, 2024</p></div>
+                <div><span class="text-gray-400">Period</span><p class="font-medium text-gray-900 mt-0.5">Apr 1 – Apr 30, 2024</p></div>
+                <div><span class="text-gray-400">Contract</span><p class="font-mono text-gray-900 mt-0.5 text-xs">#CT-2024-0891</p></div>
+              </div>
+              <table class="w-full text-sm">
+                <thead><tr class="text-gray-400 text-xs border-b border-gray-100"><th class="text-left pb-2 font-medium">Description</th><th class="text-right pb-2 font-medium">Amount</th></tr></thead>
+                <tbody class="divide-y divide-gray-50">
+                  <tr><td class="py-2.5 text-gray-700">Brand Strategy & Discovery</td><td class="py-2.5 text-right text-gray-900">$4,200.00</td></tr>
+                  <tr><td class="py-2.5 text-gray-700">UI Design & Prototyping</td><td class="py-2.5 text-right text-gray-900">$4,800.00</td></tr>
+                  <tr><td class="py-2.5 text-gray-700">Project Management</td><td class="py-2.5 text-right text-gray-900">$2,200.00</td></tr>
+                </tbody>
+                <tfoot><tr class="border-t-2 border-gray-200"><td class="pt-3 font-semibold">Total</td><td class="pt-3 text-right font-bold text-lg">$11,200.00</td></tr></tfoot>
+              </table>
+            </div>
+            <div class="bg-white rounded-xl border border-gray-200 p-5">
+              <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Contract Verification Summary</p>
+              <div class="flex items-center gap-4 text-sm">
+                <div class="text-center"><p class="text-gray-400 text-xs mb-1">Contract</p><p class="font-bold text-gray-900">$11,200</p></div>
+                <div class="flex-1 flex items-center gap-2"><div class="flex-1 h-px bg-green-200"></div><svg class="w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><div class="flex-1 h-px bg-green-200"></div></div>
+                <div class="text-center"><p class="text-gray-400 text-xs mb-1">Invoice</p><p class="font-bold text-gray-900">$11,200</p></div>
+              </div>
+              <p class="text-xs text-green-600 text-center mt-2 font-medium">All clear — no deviations found</p>
+            </div>
+          </div>
+          <div class="space-y-4">
+            <div class="bg-white rounded-xl border border-gray-200 p-4 space-y-2">
+              <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Actions</p>
+              <button onclick="approveHappy()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors flex items-center justify-center gap-2">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                Approve
+              </button>
+              <button onclick="goToInbox()" class="w-full border border-gray-200 text-gray-600 text-sm font-medium px-4 py-2.5 rounded-xl hover:bg-gray-50 transition-colors">Reject</button>
+            </div>
+            <div class="bg-gray-50 rounded-xl border border-gray-200 p-4 text-xs text-gray-500">
+              <p class="font-medium text-gray-700 mb-1">Payment via Wise</p>
+              <p>Settlement: 2–5 business days after approval</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Happy path — Approved -->
+      <div id="t3-step-3" class="step">
+        <div class="flex flex-col items-center justify-center py-16 text-center max-w-md mx-auto">
+          <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mb-4">
+            <svg class="w-9 h-9 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+          </div>
+          <h2 class="text-xl font-bold text-gray-900 mb-2">Payment Queued</h2>
+          <p class="text-gray-500 text-sm mb-6">Invoice approved. Funds will settle to Alex Rivera in 2–5 business days via Wise.</p>
+          <div class="w-full bg-white rounded-xl border border-gray-200 text-left p-5 space-y-3 text-sm mb-6">
+            <div class="flex justify-between"><span class="text-gray-400">Invoice</span><span class="font-mono text-gray-900">#INV-2024-1147</span></div>
+            <div class="flex justify-between"><span class="text-gray-400">Approved by</span><span class="text-gray-900">You · May 1, 2024 at 11:05 AM</span></div>
+            <div class="flex justify-between"><span class="text-gray-400">Amount</span><span class="font-semibold text-gray-900">$11,200.00</span></div>
+            <div class="flex justify-between items-center"><span class="text-gray-400">Status</span><span class="badge-queued px-2.5 py-1 rounded-full text-xs font-semibold">Payment Queued</span></div>
+          </div>
+          <button onclick="goToInbox()" class="text-sm text-indigo-600 hover:underline">Back to inbox</button>
+        </div>
+      </div>
+
+      <!-- Step 4: Error path — Invoice Detail with Mismatch Card -->
+      <div id="t3-step-4" class="step">
+        <div class="mb-5 flex items-center gap-3">
+          <button onclick="goToInbox()" class="text-gray-400 hover:text-gray-600 transition-colors">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <div>
+            <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">Client View · Invoice #INV-2024-1148</p>
+            <h2 class="text-xl font-semibold text-gray-900">Alex Rivera — $14,000.00</h2>
+          </div>
+        </div>
+
+        <!-- MISMATCH CARD — above CTAs, per FR-2.3 -->
+        <div class="bg-amber-50 border-2 border-amber-300 rounded-xl p-5 mb-5">
+          <div class="flex items-start gap-3 mb-4">
+            <div class="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center shrink-0">
+              <svg class="w-5 h-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <p class="font-bold text-amber-900">Contract Mismatch Detected</p>
+                <span class="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-bold uppercase tracking-wide">Flag-Hold</span>
+              </div>
+              <p class="text-sm text-amber-800">Invoice amount exceeds the contracted fixed fee by $2,800 (25%). Contract #CT-2024-0891 specifies $11,200 total.</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-3 gap-3">
+            <div class="bg-white rounded-lg p-3 text-center border border-amber-200">
+              <p class="text-xs text-gray-400 mb-1">Contract Term</p>
+              <p class="text-xl font-bold text-gray-900">$11,200</p>
+              <p class="text-xs text-gray-400 mt-1">Fixed-fee signed Mar 14</p>
+            </div>
+            <div class="flex items-center justify-center">
+              <div class="text-center">
+                <svg class="w-6 h-6 text-red-400 mx-auto mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+                <p class="text-xs text-red-500 font-semibold">+$2,800</p>
+                <p class="text-xs text-red-400">+25%</p>
+              </div>
+            </div>
+            <div class="bg-red-50 rounded-lg p-3 text-center border border-red-200">
+              <p class="text-xs text-gray-400 mb-1">Invoice Claim</p>
+              <p class="text-xl font-bold text-red-600">$14,000</p>
+              <p class="text-xs text-gray-400 mt-1">#INV-2024-1148</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-5">
+          <div class="col-span-2 space-y-4">
+            <div class="bg-white rounded-xl border border-gray-200 p-5 opacity-80">
+              <div class="grid grid-cols-2 gap-4 text-sm mb-4">
+                <div><span class="text-gray-400">From</span><p class="font-medium text-gray-900 mt-0.5">Alex Rivera</p></div>
+                <div><span class="text-gray-400">Invoice Date</span><p class="font-medium text-gray-900 mt-0.5">May 1, 2024</p></div>
+                <div><span class="text-gray-400">Period</span><p class="font-medium text-gray-900 mt-0.5">Apr 1 – Apr 30, 2024</p></div>
+                <div><span class="text-gray-400">Contract</span><p class="font-mono text-gray-900 mt-0.5 text-xs">#CT-2024-0891</p></div>
+              </div>
+              <table class="w-full text-sm">
+                <thead><tr class="text-gray-400 text-xs border-b border-gray-100"><th class="text-left pb-2 font-medium">Description</th><th class="text-right pb-2 font-medium">Amount</th></tr></thead>
+                <tbody class="divide-y divide-gray-50">
+                  <tr><td class="py-2.5 text-gray-700">Brand Strategy & Discovery</td><td class="py-2.5 text-right text-gray-900">$6,000.00</td></tr>
+                  <tr><td class="py-2.5 text-gray-700">UI Design & Prototyping</td><td class="py-2.5 text-right text-gray-900">$5,800.00</td></tr>
+                  <tr><td class="py-2.5 text-gray-700">Project Management</td><td class="py-2.5 text-right text-gray-900">$2,200.00</td></tr>
+                </tbody>
+                <tfoot><tr class="border-t-2 border-gray-200"><td class="pt-3 font-semibold">Total</td><td class="pt-3 text-right font-bold text-red-600 text-lg">$14,000.00</td></tr></tfoot>
+              </table>
+            </div>
+
+            <!-- Dispute thread -->
+            <div id="dispute-thread" class="hidden bg-white rounded-xl border border-indigo-200 p-5">
+              <div class="flex items-center gap-2 mb-4">
+                <svg class="w-4 h-4 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                <p class="text-sm font-semibold text-gray-900">Dispute Thread</p>
+                <span class="text-xs bg-indigo-50 text-indigo-600 px-2 py-0.5 rounded-full font-medium border border-indigo-200">Open</span>
+              </div>
+              <div class="space-y-3 mb-4">
+                <div class="thread-msg system">
+                  <p class="text-xs text-gray-400 mb-0.5">System · May 1, 2024 at 11:08 AM</p>
+                  <p class="text-sm text-gray-600">Dispute opened by Meridian Digital Co. for invoice #INV-2024-1148. Amount claimed ($14,000) exceeds contracted fixed fee ($11,200) by $2,800. Ops team notified.</p>
+                </div>
+                <div class="thread-msg client" id="client-thread-msg" style="display:none">
+                  <p class="text-xs text-gray-400 mb-0.5">You (Meridian Digital Co.) · just now</p>
+                  <p class="text-sm text-gray-800" id="client-msg-display"></p>
+                </div>
+                <div class="thread-msg contractor" id="contractor-response" style="display:none">
+                  <p class="text-xs text-gray-400 mb-0.5">Alex Rivera · just now</p>
+                  <p class="text-sm text-gray-800">I invoiced $14,000 because the scope expanded beyond the original brief — we discussed this via email on April 3rd. Happy to share that thread if needed.</p>
+                </div>
+                <div id="ops-note" class="hidden bg-gray-50 border border-gray-200 rounded-lg p-3 flex items-start gap-2">
+                  <svg class="w-4 h-4 text-gray-500 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                  <p class="text-xs text-gray-500"><span class="font-medium text-gray-700">Ops team has been notified</span> and may intervene if the dispute isn't resolved within 48 hours.</p>
+                </div>
+              </div>
+              <div id="thread-input-area">
+                <textarea id="dispute-msg" rows="2" placeholder="Add a message to the thread…" class="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300 resize-none mb-2"></textarea>
+                <button onclick="submitDisputeMsg()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors">Submit to Thread</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions Sidebar -->
+          <div class="space-y-3">
+            <div class="bg-white rounded-xl border border-amber-200 p-4">
+              <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Actions</p>
+              <button onclick="showApproveModal()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors mb-2 flex items-center justify-center gap-2">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                Approve with Reason
+              </button>
+              <button onclick="rejectError()" class="w-full border border-red-200 text-red-600 text-sm font-semibold px-4 py-2.5 rounded-xl hover:bg-red-50 transition-colors mb-2">
+                Reject
+              </button>
+              <button onclick="openDisputeThread()" class="w-full border border-indigo-200 text-indigo-700 text-sm font-semibold px-4 py-2.5 rounded-xl hover:bg-indigo-50 transition-colors flex items-center justify-center gap-2">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                Open Dispute Thread
+              </button>
+            </div>
+            <div class="bg-amber-50 rounded-xl border border-amber-200 p-4 text-xs text-amber-800">
+              <p class="font-medium mb-1">No payment blocked</p>
+              <p>The AI flags mismatches for human review. You decide. No funds move without your approval.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 5: Error path — Rejected -->
+      <div id="t3-step-5" class="step">
+        <div class="flex flex-col items-center justify-center py-16 text-center max-w-md mx-auto">
+          <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
+            <svg class="w-9 h-9 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </div>
+          <h2 class="text-xl font-bold text-gray-900 mb-2">Invoice Rejected</h2>
+          <p class="text-gray-500 text-sm mb-6">Alex Rivera has been notified. No payment will be processed for this invoice.</p>
+          <div class="w-full bg-white rounded-xl border border-gray-200 text-left p-5 space-y-3 text-sm mb-6">
+            <div class="flex justify-between"><span class="text-gray-400">Invoice</span><span class="font-mono text-gray-900">#INV-2024-1148</span></div>
+            <div class="flex justify-between"><span class="text-gray-400">Rejected by</span><span class="text-gray-900">You · May 1, 2024 at 11:09 AM</span></div>
+            <div class="flex justify-between"><span class="text-gray-400">Amount</span><span class="font-semibold text-gray-900">$14,000.00</span></div>
+            <div class="flex justify-between items-center"><span class="text-gray-400">Status</span><span class="badge-reject px-2.5 py-1 rounded-full text-xs font-semibold">Rejected</span></div>
+          </div>
+          <div class="w-full bg-gray-50 border border-gray-200 rounded-xl p-4 text-sm text-gray-600 text-left mb-6">
+            <p class="font-medium text-gray-800 mb-1">What happens next</p>
+            <p class="text-xs">Alex Rivera can revise and resubmit, or both parties can open a dispute thread to resolve the discrepancy.</p>
+          </div>
+          <button onclick="goToInbox()" class="text-sm text-indigo-600 hover:underline">Back to inbox</button>
+        </div>
+      </div>
+
+      <!-- Step 6: Error path — Approved with reason -->
+      <div id="t3-step-6" class="step">
+        <div class="flex flex-col items-center justify-center py-16 text-center max-w-md mx-auto">
+          <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mb-4">
+            <svg class="w-9 h-9 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+          </div>
+          <h2 class="text-xl font-bold text-gray-900 mb-2">Payment Queued</h2>
+          <p class="text-gray-500 text-sm mb-6">Invoice approved with override reason logged. $14,000 will settle to Alex Rivera in 2–5 business days via Wise.</p>
+          <div class="w-full bg-white rounded-xl border border-gray-200 text-left p-5 space-y-3 text-sm mb-6">
+            <div class="flex justify-between"><span class="text-gray-400">Invoice</span><span class="font-mono text-gray-900">#INV-2024-1148</span></div>
+            <div class="flex justify-between"><span class="text-gray-400">Approved by</span><span class="text-gray-900">You · May 1, 2024 at 11:12 AM</span></div>
+            <div class="flex justify-between"><span class="text-gray-400">Amount</span><span class="font-semibold text-gray-900">$14,000.00</span></div>
+            <div class="flex justify-between items-center"><span class="text-gray-400">Status</span><span class="badge-queued px-2.5 py-1 rounded-full text-xs font-semibold">Payment Queued</span></div>
+            <div class="flex justify-between items-center"><span class="text-gray-400">Override</span><span class="text-xs text-amber-700 font-medium">Logged · exceeded contract by 25%</span></div>
+          </div>
+          <button onclick="goToInbox()" class="text-sm text-indigo-600 hover:underline">Back to inbox</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Approve with Reason Modal -->
+  <div id="approve-modal" class="modal-overlay hidden">
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center">
+          <svg class="w-5 h-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+        </div>
+        <h3 class="text-base font-semibold text-gray-900">Approve with Reason</h3>
+      </div>
+      <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 mb-4 text-xs text-amber-800">
+        You are approving an invoice that is <strong>$2,800 above</strong> the contracted amount. Please document your reason — this will be logged.
+      </div>
+      <label class="block text-sm font-medium text-gray-700 mb-2">Reason for approval override</label>
+      <textarea id="approve-reason" rows="3" placeholder="e.g. We agreed to expand scope via email on April 3rd. This amount reflects the updated agreed terms."
+        class="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300 resize-none mb-4"></textarea>
+      <div class="flex gap-3">
+        <button onclick="hideApproveModal()" class="flex-1 text-sm border border-gray-200 rounded-xl py-2.5 text-gray-600 hover:bg-gray-50 transition-colors">Cancel</button>
+        <button onclick="confirmApproval()" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl py-2.5 transition-colors">Confirm Approval</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const invoiceState = { inv1147: 'pending', inv1148: 'pending' };
+
+    function switchTab(n) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => {
+        el.classList.remove('border-indigo-600', 'text-indigo-600');
+        el.classList.add('border-transparent', 'text-gray-500');
+      });
+      document.getElementById('tab-' + n).classList.add('active');
+      const btn = document.getElementById('tab-btn-' + n);
+      btn.classList.remove('border-transparent', 'text-gray-500');
+      btn.classList.add('border-indigo-600', 'text-indigo-600');
+      // Reset to step 1 of the target tab
+      const tabEl = document.getElementById('tab-' + n);
+      tabEl.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+      tabEl.querySelector('.step').classList.add('active');
+    }
+
+    function showStep(prefix, n) {
+      const tabNum = prefix[1];
+      document.querySelectorAll('#tab-' + tabNum + ' .step').forEach(el => el.classList.remove('active'));
+      const target = document.getElementById(prefix + '-step-' + n);
+      if (target) target.classList.add('active');
+    }
+
+    function goToInbox() {
+      resetDisputeThread();
+      refreshInboxBadges();
+      showStep('t3', 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function resetDisputeThread() {
+      document.getElementById('dispute-thread').classList.add('hidden');
+      document.getElementById('contractor-response').style.display = 'none';
+      document.getElementById('client-thread-msg').style.display = 'none';
+      document.getElementById('ops-note').classList.add('hidden');
+      document.getElementById('client-msg-display').textContent = '';
+      document.getElementById('dispute-msg').value = '';
+      const area = document.getElementById('thread-input-area');
+      area.style.opacity = '1';
+      area.style.pointerEvents = 'auto';
+    }
+
+    function refreshInboxBadges() {
+      const b1147 = document.getElementById('badge-1147');
+      const b1148 = document.getElementById('badge-1148');
+      const card1148 = document.getElementById('card-1148');
+
+      if (invoiceState.inv1147 === 'approved') {
+        b1147.className = 'badge-queued px-2.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1';
+        b1147.innerHTML = '<svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg> Payment Queued';
+        document.getElementById('card-1147').classList.remove('hover:border-indigo-300');
+        document.getElementById('card-1147').classList.add('opacity-60', 'cursor-default');
+        document.getElementById('card-1147').onclick = null;
+      }
+
+      if (invoiceState.inv1148 === 'rejected') {
+        b1148.className = 'badge-reject px-2.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1';
+        b1148.innerHTML = '<svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg> Rejected';
+        card1148.classList.remove('border-amber-300', 'hover:border-amber-400');
+        card1148.classList.add('border-gray-200', 'opacity-60', 'cursor-default');
+        card1148.onclick = null;
+      } else if (invoiceState.inv1148 === 'approved') {
+        b1148.className = 'badge-queued px-2.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1';
+        b1148.innerHTML = '<svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg> Payment Queued — Override Logged';
+        card1148.classList.remove('border-amber-300', 'hover:border-amber-400');
+        card1148.classList.add('border-gray-200', 'opacity-60', 'cursor-default');
+        card1148.onclick = null;
+      }
+    }
+
+    function runCheck(type) {
+      if (type === 'happy') {
+        showStep('t1', '1-5');
+        setTimeout(() => showStep('t1', 2), 1600);
+      } else {
+        showStep('t2', '1-5');
+        setTimeout(() => showStep('t2', 2), 1600);
+      }
+    }
+
+    function approveHappy() {
+      invoiceState.inv1147 = 'approved';
+      showStep('t3', 3);
+    }
+
+    function rejectError() {
+      invoiceState.inv1148 = 'rejected';
+      showStep('t3', 5);
+    }
+
+    function openDisputeThread() {
+      document.getElementById('dispute-thread').classList.remove('hidden');
+      document.getElementById('ops-note').classList.remove('hidden');
+      document.getElementById('dispute-thread').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function submitDisputeMsg() {
+      const msg = document.getElementById('dispute-msg').value.trim();
+      if (!msg) return;
+      document.getElementById('client-msg-display').textContent = msg;
+      document.getElementById('client-thread-msg').style.display = 'block';
+      document.getElementById('dispute-msg').value = '';
+      const area = document.getElementById('thread-input-area');
+      area.style.opacity = '0.5';
+      area.style.pointerEvents = 'none';
+      setTimeout(() => {
+        document.getElementById('contractor-response').style.display = 'block';
+      }, 1200);
+    }
+
+    function showApproveModal() {
+      document.getElementById('approve-reason').value = '';
+      document.getElementById('approve-reason').classList.remove('ring-2', 'ring-red-300');
+      document.getElementById('approve-modal').classList.remove('hidden');
+    }
+
+    function hideApproveModal() {
+      document.getElementById('approve-modal').classList.add('hidden');
+    }
+
+    function confirmApproval() {
+      const reason = document.getElementById('approve-reason').value.trim();
+      if (!reason) {
+        document.getElementById('approve-reason').classList.add('ring-2', 'ring-red-300');
+        return;
+      }
+      hideApproveModal();
+      invoiceState.inv1148 = 'approved';
+      showStep('t3', 6);
+    }
+  </script>
+</body>
+</html>
