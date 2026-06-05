@@ -420,6 +420,57 @@
               <span class="ml-auto text-xs text-amber-600 group-hover:underline">Review →</span>
             </div>
           </div>
+
+          <!-- Card 3: Jordan Kim — Retainer, clear -->
+          <div onclick="showStep('t3', 7)" class="bg-white rounded-xl border border-gray-200 p-5 hover:border-indigo-300 hover:shadow-sm cursor-pointer transition-all group">
+            <div class="flex items-start justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-violet-100 rounded-full flex items-center justify-center text-violet-700 font-bold text-sm">JK</div>
+                <div>
+                  <p class="font-semibold text-gray-900 group-hover:text-indigo-700 transition-colors">Jordan Kim</p>
+                  <p class="text-xs text-gray-400">Content Strategy Retainer · April 2024</p>
+                </div>
+              </div>
+              <div class="text-right">
+                <p class="font-bold text-gray-900 text-lg">$8,500.00</p>
+                <p class="text-xs text-gray-400 font-mono">#INV-2024-1151</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 mt-4 pt-4 border-t border-gray-100">
+              <span class="badge-clear px-2.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
+                <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                Matches Contract
+              </span>
+              <span class="text-xs text-gray-400">Contract #CT-2024-0887 · May 2, 2024</span>
+              <span class="ml-auto text-xs text-indigo-600 group-hover:underline">Review →</span>
+            </div>
+          </div>
+
+          <!-- Card 4: Marcus Chen — Hourly, hours exceeded -->
+          <div onclick="showStep('t3', 9)" class="bg-white rounded-xl border border-amber-300 p-5 hover:border-amber-400 hover:shadow-sm cursor-pointer transition-all group">
+            <div class="flex items-start justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-sky-100 rounded-full flex items-center justify-center text-sky-700 font-bold text-sm">MC</div>
+                <div>
+                  <p class="font-semibold text-gray-900 group-hover:text-amber-700 transition-colors">Marcus Chen</p>
+                  <p class="text-xs text-gray-400">Frontend Development · Hourly</p>
+                </div>
+              </div>
+              <div class="text-right">
+                <p class="font-bold text-gray-900 text-lg">$3,900.00</p>
+                <p class="text-xs text-gray-400 font-mono">#INV-2024-1152</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 mt-4 pt-4 border-t border-amber-100">
+              <span class="badge-hold px-2.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
+                <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01"/></svg>
+                Hours Exceeded — Review Required
+              </span>
+              <span class="text-xs text-gray-400">May 3, 2024</span>
+              <span class="ml-auto text-xs text-amber-600 group-hover:underline">Review →</span>
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -695,6 +746,260 @@
           <button onclick="goToInbox()" class="text-sm text-indigo-600 hover:underline">Back to inbox</button>
         </div>
       </div>
+
+      <!-- Step 7: Jordan Kim — Retainer detail (clear) -->
+      <div id="t3-step-7" class="step">
+        <div class="mb-5 flex items-center gap-3">
+          <button onclick="goToInbox()" class="text-gray-400 hover:text-gray-600 transition-colors">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <div>
+            <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">Client View · Invoice #INV-2024-1151</p>
+            <h2 class="text-xl font-semibold text-gray-900">Jordan Kim — $8,500.00</h2>
+          </div>
+        </div>
+        <div class="bg-green-50 border border-green-200 rounded-xl p-4 mb-5 flex items-center gap-3">
+          <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center shrink-0">
+            <svg class="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <div>
+            <p class="font-semibold text-green-800">This invoice matches the signed retainer</p>
+            <p class="text-sm text-green-700">AI check complete · Contract #CT-2024-0887 · Confidence 95%</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-5 mb-5">
+          <div class="col-span-2 space-y-4">
+            <div class="bg-white rounded-xl border border-gray-200 p-5">
+              <div class="grid grid-cols-2 gap-4 text-sm mb-4">
+                <div><span class="text-gray-400">From</span><p class="font-medium text-gray-900 mt-0.5">Jordan Kim</p></div>
+                <div><span class="text-gray-400">Invoice Date</span><p class="font-medium text-gray-900 mt-0.5">May 2, 2024</p></div>
+                <div><span class="text-gray-400">Period</span><p class="font-medium text-gray-900 mt-0.5">Apr 1 – Apr 30, 2024</p></div>
+                <div><span class="text-gray-400">Contract</span><p class="font-mono text-gray-900 mt-0.5 text-xs">#CT-2024-0887</p></div>
+                <div><span class="text-gray-400">Contract Type</span><p class="font-medium text-gray-900 mt-0.5">Monthly Retainer</p></div>
+                <div><span class="text-gray-400">Retainer Rate</span><p class="font-medium text-gray-900 mt-0.5">$8,500 / month</p></div>
+              </div>
+              <table class="w-full text-sm">
+                <thead><tr class="text-gray-400 text-xs border-b border-gray-100"><th class="text-left pb-2 font-medium">Deliverable</th><th class="text-right pb-2 font-medium">Amount</th></tr></thead>
+                <tbody class="divide-y divide-gray-50">
+                  <tr><td class="py-2.5 text-gray-700">Content Strategy & Planning</td><td class="py-2.5 text-right text-gray-900">$3,200.00</td></tr>
+                  <tr><td class="py-2.5 text-gray-700">SEO Audit & Recommendations</td><td class="py-2.5 text-right text-gray-900">$2,300.00</td></tr>
+                  <tr><td class="py-2.5 text-gray-700">Monthly Performance Reports</td><td class="py-2.5 text-right text-gray-900">$3,000.00</td></tr>
+                </tbody>
+                <tfoot><tr class="border-t-2 border-gray-200"><td class="pt-3 font-semibold">Total</td><td class="pt-3 text-right font-bold text-lg">$8,500.00</td></tr></tfoot>
+              </table>
+            </div>
+            <div class="bg-white rounded-xl border border-gray-200 p-5">
+              <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Contract Verification Summary</p>
+              <div class="flex items-center gap-4 text-sm">
+                <div class="text-center"><p class="text-gray-400 text-xs mb-1">Monthly Retainer</p><p class="font-bold text-gray-900">$8,500</p></div>
+                <div class="flex-1 flex items-center gap-2"><div class="flex-1 h-px bg-green-200"></div><svg class="w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><div class="flex-1 h-px bg-green-200"></div></div>
+                <div class="text-center"><p class="text-gray-400 text-xs mb-1">Invoice</p><p class="font-bold text-gray-900">$8,500</p></div>
+              </div>
+              <p class="text-xs text-green-600 text-center mt-2 font-medium">Retainer amount matches — no deviations</p>
+            </div>
+          </div>
+          <div class="space-y-3">
+            <div class="bg-white rounded-xl border border-gray-200 p-4 space-y-2">
+              <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Actions</p>
+              <button onclick="showStep('t3', 8)" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors flex items-center justify-center gap-2">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                Approve
+              </button>
+              <button onclick="goToInbox()" class="w-full border border-gray-200 text-gray-600 text-sm font-medium px-4 py-2.5 rounded-xl hover:bg-gray-50 transition-colors">Reject</button>
+            </div>
+            <div class="bg-white rounded-xl border border-gray-200 p-4">
+              <div class="flex items-center gap-2 mb-3">
+                <svg class="w-4 h-4 text-gray-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Contract on File</p>
+              </div>
+              <div class="grid grid-cols-2 gap-x-3 gap-y-1.5 text-xs">
+                <span class="text-gray-400">Contract</span><span class="text-gray-900 font-mono">#CT-2024-0887</span>
+                <span class="text-gray-400">Type</span><span class="text-gray-900">Monthly Retainer</span>
+                <span class="text-gray-400">Rate</span><span class="text-gray-900">$8,500 / month</span>
+                <span class="text-gray-400">Term</span><span class="text-gray-900">Mar–May 2024</span>
+                <span class="text-gray-400">Signed</span><span class="text-gray-900">Feb 27, 2024</span>
+                <span class="text-gray-400 col-span-2">Scope</span>
+                <span class="text-gray-900 font-medium col-span-2">Content Strategy & SEO</span>
+              </div>
+            </div>
+            <div class="bg-gray-50 rounded-xl border border-gray-200 p-4 text-xs text-gray-500">
+              <p class="font-medium text-gray-700 mb-1">Payment via Wise</p>
+              <p>Settlement: 2–5 business days after approval</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 8: Jordan Kim — Approved -->
+      <div id="t3-step-8" class="step">
+        <div class="flex flex-col items-center justify-center py-16 text-center max-w-md mx-auto">
+          <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mb-4">
+            <svg class="w-9 h-9 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+          </div>
+          <h2 class="text-xl font-bold text-gray-900 mb-2">Payment Queued</h2>
+          <p class="text-gray-500 text-sm mb-6">Invoice approved. Funds will settle to Jordan Kim in 2–5 business days via Wise.</p>
+          <div class="w-full bg-white rounded-xl border border-gray-200 text-left p-5 space-y-3 text-sm mb-6">
+            <div class="flex justify-between"><span class="text-gray-400">Invoice</span><span class="font-mono text-gray-900">#INV-2024-1151</span></div>
+            <div class="flex justify-between"><span class="text-gray-400">Contract type</span><span class="text-gray-900">Monthly Retainer</span></div>
+            <div class="flex justify-between"><span class="text-gray-400">Approved by</span><span class="text-gray-900">You · May 2, 2024 at 9:41 AM</span></div>
+            <div class="flex justify-between"><span class="text-gray-400">Amount</span><span class="font-semibold text-gray-900">$8,500.00</span></div>
+            <div class="flex justify-between items-center"><span class="text-gray-400">Status</span><span class="badge-queued px-2.5 py-1 rounded-full text-xs font-semibold">Payment Queued</span></div>
+          </div>
+          <button onclick="goToInbox()" class="text-sm text-indigo-600 hover:underline">Back to inbox</button>
+        </div>
+      </div>
+
+      <!-- Step 9: Marcus Chen — Hourly mismatch (hours exceeded) -->
+      <div id="t3-step-9" class="step">
+        <div class="mb-5 flex items-center gap-3">
+          <button onclick="goToInbox()" class="text-gray-400 hover:text-gray-600 transition-colors">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <div>
+            <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">Client View · Invoice #INV-2024-1152</p>
+            <h2 class="text-xl font-semibold text-gray-900">Marcus Chen — $3,900.00</h2>
+          </div>
+        </div>
+
+        <!-- Mismatch card -->
+        <div class="bg-amber-50 border-2 border-amber-300 rounded-xl p-5 mb-5">
+          <div class="flex items-start gap-3 mb-4">
+            <div class="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center shrink-0">
+              <svg class="w-5 h-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <p class="font-bold text-amber-900">Monthly Hour Cap Exceeded</p>
+                <span class="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-bold uppercase tracking-wide">Flag-Hold</span>
+              </div>
+              <p class="text-sm text-amber-800">Invoice claims 60 hours but the contract caps monthly hours at 48. The 12 extra hours (at $65/hr) add $780 above the contracted maximum of $3,120.</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-3 gap-3">
+            <div class="bg-white rounded-lg p-3 text-center border border-amber-200">
+              <p class="text-xs text-gray-400 mb-1">Contract Max</p>
+              <p class="text-xl font-bold text-gray-900">$3,120</p>
+              <p class="text-xs text-gray-400 mt-1">48 hrs × $65/hr</p>
+            </div>
+            <div class="flex items-center justify-center">
+              <div class="text-center">
+                <svg class="w-6 h-6 text-red-400 mx-auto mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+                <p class="text-xs text-red-500 font-semibold">+$780</p>
+                <p class="text-xs text-red-400">+12 hrs</p>
+              </div>
+            </div>
+            <div class="bg-red-50 rounded-lg p-3 text-center border border-red-200">
+              <p class="text-xs text-gray-400 mb-1">Invoice Claim</p>
+              <p class="text-xl font-bold text-red-600">$3,900</p>
+              <p class="text-xs text-gray-400 mt-1">60 hrs × $65/hr</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-5">
+          <div class="col-span-2 space-y-4">
+            <div class="bg-white rounded-xl border border-gray-200 p-5 opacity-80">
+              <div class="grid grid-cols-2 gap-4 text-sm mb-4">
+                <div><span class="text-gray-400">From</span><p class="font-medium text-gray-900 mt-0.5">Marcus Chen</p></div>
+                <div><span class="text-gray-400">Invoice Date</span><p class="font-medium text-gray-900 mt-0.5">May 3, 2024</p></div>
+                <div><span class="text-gray-400">Period</span><p class="font-medium text-gray-900 mt-0.5">Apr 1 – Apr 30, 2024</p></div>
+                <div><span class="text-gray-400">Contract</span><p class="font-mono text-gray-900 mt-0.5 text-xs">#CT-2024-0899</p></div>
+                <div><span class="text-gray-400">Rate</span><p class="font-medium text-gray-900 mt-0.5">$65 / hour</p></div>
+                <div><span class="text-gray-400">Hours claimed</span><p class="font-medium text-red-600 mt-0.5">60 hrs (cap: 48)</p></div>
+              </div>
+              <table class="w-full text-sm">
+                <thead><tr class="text-gray-400 text-xs border-b border-gray-100"><th class="text-left pb-2 font-medium">Description</th><th class="text-right pb-2 font-medium">Hours</th><th class="text-right pb-2 font-medium">Amount</th></tr></thead>
+                <tbody class="divide-y divide-gray-50">
+                  <tr><td class="py-2.5 text-gray-700">Frontend Development</td><td class="py-2.5 text-right text-gray-500">32 hrs</td><td class="py-2.5 text-right text-gray-900">$2,080.00</td></tr>
+                  <tr><td class="py-2.5 text-gray-700">Code Review & QA</td><td class="py-2.5 text-right text-gray-500">16 hrs</td><td class="py-2.5 text-right text-gray-900">$1,040.00</td></tr>
+                  <tr><td class="py-2.5 text-gray-700">Meetings & Planning</td><td class="py-2.5 text-right text-red-400">12 hrs <span class="text-xs">(over cap)</span></td><td class="py-2.5 text-right text-red-500">$780.00</td></tr>
+                </tbody>
+                <tfoot><tr class="border-t-2 border-gray-200"><td class="pt-3 font-semibold" colspan="2">Total</td><td class="pt-3 text-right font-bold text-red-600 text-lg">$3,900.00</td></tr></tfoot>
+              </table>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <div class="bg-white rounded-xl border border-amber-200 p-4">
+              <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Actions</p>
+              <button onclick="showApproveModal('inv1152')" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors mb-2 flex items-center justify-center gap-2">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                Approve with Reason
+              </button>
+              <button onclick="showStep('t3', 10)" class="w-full border border-red-200 text-red-600 text-sm font-semibold px-4 py-2.5 rounded-xl hover:bg-red-50 transition-colors">
+                Reject
+              </button>
+            </div>
+            <!-- Contract on File -->
+            <div class="bg-white rounded-xl border border-gray-200 p-4">
+              <div class="flex items-center gap-2 mb-3">
+                <svg class="w-4 h-4 text-gray-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Contract on File</p>
+              </div>
+              <div class="grid grid-cols-2 gap-x-3 gap-y-1.5 text-xs mb-0">
+                <span class="text-gray-400">Contract</span><span class="text-gray-900 font-mono">#CT-2024-0899</span>
+                <span class="text-gray-400">Type</span><span class="text-gray-900">Hourly</span>
+                <span class="text-gray-400">Rate</span><span class="text-gray-900">$65 / hour</span>
+                <span class="text-gray-400">Monthly cap</span><span class="text-gray-900 font-medium">48 hours</span>
+                <span class="text-gray-400">Signed</span><span class="text-gray-900">Mar 20, 2024</span>
+                <span class="text-gray-400 col-span-2">Scope</span>
+                <span class="text-gray-900 font-medium col-span-2">Frontend Development</span>
+              </div>
+              <hr class="border-gray-100 my-3">
+              <div class="text-xs space-y-1">
+                <div class="flex justify-between"><span class="text-gray-400">Max monthly hours</span><span class="text-gray-900 font-medium">48 hrs</span></div>
+                <div class="flex justify-between"><span class="text-gray-400">Max monthly billing</span><span class="text-gray-900 font-bold">$3,120.00</span></div>
+              </div>
+            </div>
+            <div class="bg-amber-50 rounded-xl border border-amber-200 p-4 text-xs text-amber-800">
+              <p class="font-medium mb-1">No payment blocked</p>
+              <p>The AI flags mismatches for human review. You decide. No funds move without your approval.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 10: Marcus Chen — Rejected -->
+      <div id="t3-step-10" class="step">
+        <div class="flex flex-col items-center justify-center py-16 text-center max-w-md mx-auto">
+          <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
+            <svg class="w-9 h-9 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </div>
+          <h2 class="text-xl font-bold text-gray-900 mb-2">Invoice Rejected</h2>
+          <p class="text-gray-500 text-sm mb-6">Marcus Chen has been notified. No payment will be processed for this invoice.</p>
+          <div class="w-full bg-white rounded-xl border border-gray-200 text-left p-5 space-y-3 text-sm mb-6">
+            <div class="flex justify-between"><span class="text-gray-400">Invoice</span><span class="font-mono text-gray-900">#INV-2024-1152</span></div>
+            <div class="flex justify-between"><span class="text-gray-400">Rejected by</span><span class="text-gray-900">You · May 3, 2024</span></div>
+            <div class="flex justify-between"><span class="text-gray-400">Amount</span><span class="font-semibold text-gray-900">$3,900.00</span></div>
+            <div class="flex justify-between items-center"><span class="text-gray-400">Status</span><span class="badge-reject px-2.5 py-1 rounded-full text-xs font-semibold">Rejected</span></div>
+          </div>
+          <div class="w-full bg-gray-50 border border-gray-200 rounded-xl p-4 text-sm text-gray-600 text-left mb-6">
+            <p class="font-medium text-gray-800 mb-1">What happens next</p>
+            <p class="text-xs">Marcus Chen can resubmit with corrected hours (48 or under), or open a dispute thread if additional hours were pre-approved.</p>
+          </div>
+          <button onclick="goToInbox()" class="text-sm text-indigo-600 hover:underline">Back to inbox</button>
+        </div>
+      </div>
+
+      <!-- Step 11: Marcus Chen — Approved with override -->
+      <div id="t3-step-11" class="step">
+        <div class="flex flex-col items-center justify-center py-16 text-center max-w-md mx-auto">
+          <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mb-4">
+            <svg class="w-9 h-9 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+          </div>
+          <h2 class="text-xl font-bold text-gray-900 mb-2">Payment Queued</h2>
+          <p class="text-gray-500 text-sm mb-6">Invoice approved with override reason logged. $3,900 will settle to Marcus Chen in 2–5 business days via Wise.</p>
+          <div class="w-full bg-white rounded-xl border border-gray-200 text-left p-5 space-y-3 text-sm mb-6">
+            <div class="flex justify-between"><span class="text-gray-400">Invoice</span><span class="font-mono text-gray-900">#INV-2024-1152</span></div>
+            <div class="flex justify-between"><span class="text-gray-400">Approved by</span><span class="text-gray-900">You · May 3, 2024</span></div>
+            <div class="flex justify-between"><span class="text-gray-400">Amount</span><span class="font-semibold text-gray-900">$3,900.00</span></div>
+            <div class="flex justify-between items-center"><span class="text-gray-400">Status</span><span class="badge-queued px-2.5 py-1 rounded-full text-xs font-semibold">Payment Queued</span></div>
+            <div class="flex justify-between items-center"><span class="text-gray-400">Override</span><span class="text-xs text-amber-700 font-medium">Logged · exceeded hour cap by 12 hrs</span></div>
+          </div>
+          <button onclick="goToInbox()" class="text-sm text-indigo-600 hover:underline">Back to inbox</button>
+        </div>
+      </div>
+
     </div>
     <!-- ═══════════════════════════════════════
          TAB 4 — OPS VIEW
@@ -1276,7 +1581,10 @@
       }, 1200);
     }
 
-    function showApproveModal() {
+    let currentApproveTarget = 'inv1148';
+
+    function showApproveModal(target) {
+      currentApproveTarget = target || 'inv1148';
       document.getElementById('approve-reason').value = '';
       document.getElementById('approve-reason').classList.remove('ring-2', 'ring-red-300');
       document.getElementById('approve-modal').classList.remove('hidden');
@@ -1293,8 +1601,12 @@
         return;
       }
       hideApproveModal();
-      invoiceState.inv1148 = 'approved';
-      showStep('t3', 6);
+      if (currentApproveTarget === 'inv1152') {
+        showStep('t3', 11);
+      } else {
+        invoiceState.inv1148 = 'approved';
+        showStep('t3', 6);
+      }
     }
 
     // ── Ops Tab ─────────────────────────────────────────
