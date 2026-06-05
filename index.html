@@ -19,10 +19,11 @@
       animation: spin 0.8s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
-    .badge-clear  { background:#dcfce7; color:#166534; border:1px solid #bbf7d0; }
-    .badge-hold   { background:#fef3c7; color:#92400e; border:1px solid #fde68a; }
-    .badge-queued { background:#e0e7ff; color:#3730a3; border:1px solid #c7d2fe; }
-    .badge-reject { background:#fee2e2; color:#991b1b; border:1px solid #fecaca; }
+    .badge-clear   { background:#dcfce7; color:#166534; border:1px solid #bbf7d0; }
+    .badge-hold    { background:#fef3c7; color:#92400e; border:1px solid #fde68a; }
+    .badge-queued  { background:#e0e7ff; color:#3730a3; border:1px solid #c7d2fe; }
+    .badge-reject  { background:#fee2e2; color:#991b1b; border:1px solid #fecaca; }
+    .badge-pending { background:#f3f4f6; color:#374151; border:1px solid #d1d5db; }
     .comparison-col { flex:1; padding:16px; }
     .modal-overlay {
       position:fixed; inset:0; background:rgba(0,0,0,0.4);
@@ -422,7 +423,7 @@
           </div>
 
           <!-- Card 3: Jordan Kim — Retainer, clear -->
-          <div onclick="showStep('t3', 7)" class="bg-white rounded-xl border border-gray-200 p-5 hover:border-indigo-300 hover:shadow-sm cursor-pointer transition-all group">
+          <div id="card-1151" onclick="showStep('t3', 7)" class="bg-white rounded-xl border border-gray-200 p-5 hover:border-indigo-300 hover:shadow-sm cursor-pointer transition-all group">
             <div class="flex items-start justify-between">
               <div class="flex items-center gap-3">
                 <div class="w-10 h-10 bg-violet-100 rounded-full flex items-center justify-center text-violet-700 font-bold text-sm">JK</div>
@@ -437,7 +438,7 @@
               </div>
             </div>
             <div class="flex items-center gap-3 mt-4 pt-4 border-t border-gray-100">
-              <span class="badge-clear px-2.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
+              <span id="badge-1151" class="badge-clear px-2.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
                 <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
                 Matches Contract
               </span>
@@ -446,8 +447,33 @@
             </div>
           </div>
 
+          <!-- Card 5: Sasha Patel — Empty State (contract not extracted) -->
+          <div id="card-1155" onclick="showStep('t3', 12)" class="bg-white rounded-xl border border-gray-200 p-5 hover:border-gray-300 hover:shadow-sm cursor-pointer transition-all group">
+            <div class="flex items-start justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-500 font-bold text-sm">SP</div>
+                <div>
+                  <p class="font-semibold text-gray-900 group-hover:text-gray-700 transition-colors">Sasha Patel</p>
+                  <p class="text-xs text-gray-400">Motion Graphics Package</p>
+                </div>
+              </div>
+              <div class="text-right">
+                <p class="font-bold text-gray-900 text-lg">$5,600.00</p>
+                <p class="text-xs text-gray-400 font-mono">#INV-2024-1155</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 mt-4 pt-4 border-t border-gray-100">
+              <span id="badge-1155" class="badge-pending px-2.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
+                <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                Contract Not Extracted — No AI Check
+              </span>
+              <span class="text-xs text-gray-400">May 5, 2024</span>
+              <span class="ml-auto text-xs text-gray-500 group-hover:underline">Review →</span>
+            </div>
+          </div>
+
           <!-- Card 4: Marcus Chen — Hourly, hours exceeded -->
-          <div onclick="showStep('t3', 9)" class="bg-white rounded-xl border border-amber-300 p-5 hover:border-amber-400 hover:shadow-sm cursor-pointer transition-all group">
+          <div id="card-1152" onclick="showStep('t3', 9)" class="bg-white rounded-xl border border-amber-300 p-5 hover:border-amber-400 hover:shadow-sm cursor-pointer transition-all group">
             <div class="flex items-start justify-between">
               <div class="flex items-center gap-3">
                 <div class="w-10 h-10 bg-sky-100 rounded-full flex items-center justify-center text-sky-700 font-bold text-sm">MC</div>
@@ -462,7 +488,7 @@
               </div>
             </div>
             <div class="flex items-center gap-3 mt-4 pt-4 border-t border-amber-100">
-              <span class="badge-hold px-2.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
+              <span id="badge-1152" class="badge-hold px-2.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
                 <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01"/></svg>
                 Hours Exceeded — Review Required
               </span>
@@ -801,7 +827,7 @@
           <div class="space-y-3">
             <div class="bg-white rounded-xl border border-gray-200 p-4 space-y-2">
               <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Actions</p>
-              <button onclick="showStep('t3', 8)" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors flex items-center justify-center gap-2">
+              <button onclick="approveJordan()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors flex items-center justify-center gap-2">
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                 Approve
               </button>
@@ -926,7 +952,7 @@
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                 Approve with Reason
               </button>
-              <button onclick="showStep('t3', 10)" class="w-full border border-red-200 text-red-600 text-sm font-semibold px-4 py-2.5 rounded-xl hover:bg-red-50 transition-colors">
+              <button onclick="rejectMarcus()" class="w-full border border-red-200 text-red-600 text-sm font-semibold px-4 py-2.5 rounded-xl hover:bg-red-50 transition-colors">
                 Reject
               </button>
             </div>
@@ -995,6 +1021,175 @@
             <div class="flex justify-between"><span class="text-gray-400">Amount</span><span class="font-semibold text-gray-900">$3,900.00</span></div>
             <div class="flex justify-between items-center"><span class="text-gray-400">Status</span><span class="badge-queued px-2.5 py-1 rounded-full text-xs font-semibold">Payment Queued</span></div>
             <div class="flex justify-between items-center"><span class="text-gray-400">Override</span><span class="text-xs text-amber-700 font-medium">Logged · exceeded hour cap by 12 hrs</span></div>
+          </div>
+          <button onclick="goToInbox()" class="text-sm text-indigo-600 hover:underline">Back to inbox</button>
+        </div>
+      </div>
+
+      <!-- Step 12: Sasha Patel — Empty State (no contract extraction) -->
+      <div id="t3-step-12" class="step">
+        <div class="mb-5 flex items-center gap-3">
+          <button onclick="goToInbox()" class="text-gray-400 hover:text-gray-600 transition-colors">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <div>
+            <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">Client View · Invoice #INV-2024-1155</p>
+            <h2 class="text-xl font-semibold text-gray-900">Sasha Patel — $5,600.00</h2>
+          </div>
+        </div>
+
+        <!-- Empty state banner -->
+        <div class="bg-gray-50 border-2 border-gray-200 rounded-xl p-5 mb-5">
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center shrink-0 mt-0.5">
+              <svg class="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            </div>
+            <div class="flex-1">
+              <p class="font-semibold text-gray-700 mb-1">AI check unavailable — contract not yet extracted</p>
+              <p class="text-sm text-gray-500">Contract <span class="font-mono text-gray-700">#CT-2024-0911</span> was uploaded on May 4, 2024 but hasn't been processed yet. Until extraction completes, the AI can't verify this invoice against the contract terms.</p>
+              <div class="mt-3 flex items-center gap-4 text-xs">
+                <div class="flex items-center gap-1.5 text-gray-400">
+                  <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Contract uploaded: May 4, 2024
+                </div>
+                <div class="flex items-center gap-1.5 text-gray-400">
+                  <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                  Extraction: Queued
+                </div>
+                <div class="flex items-center gap-1.5 text-amber-500 font-medium">
+                  <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                  Compliance check: Not run
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-5">
+          <div class="col-span-2 space-y-4">
+            <div class="bg-white rounded-xl border border-gray-200 p-5">
+              <div class="grid grid-cols-2 gap-4 text-sm mb-4">
+                <div><span class="text-gray-400">From</span><p class="font-medium text-gray-900 mt-0.5">Sasha Patel</p></div>
+                <div><span class="text-gray-400">Invoice Date</span><p class="font-medium text-gray-900 mt-0.5">May 5, 2024</p></div>
+                <div><span class="text-gray-400">Period</span><p class="font-medium text-gray-900 mt-0.5">Apr 1 – Apr 30, 2024</p></div>
+                <div><span class="text-gray-400">Contract</span><p class="font-mono text-gray-900 mt-0.5 text-xs">#CT-2024-0911 <span class="text-gray-400 font-sans">(not extracted)</span></p></div>
+              </div>
+              <table class="w-full text-sm">
+                <thead><tr class="text-gray-400 text-xs border-b border-gray-100"><th class="text-left pb-2 font-medium">Description</th><th class="text-right pb-2 font-medium">Amount</th></tr></thead>
+                <tbody class="divide-y divide-gray-50">
+                  <tr><td class="py-2.5 text-gray-700">Motion Graphics — Brand Intro</td><td class="py-2.5 text-right text-gray-900">$2,400.00</td></tr>
+                  <tr><td class="py-2.5 text-gray-700">Social Media Animations (×6)</td><td class="py-2.5 text-right text-gray-900">$1,800.00</td></tr>
+                  <tr><td class="py-2.5 text-gray-700">Revisions & Export</td><td class="py-2.5 text-right text-gray-900">$1,400.00</td></tr>
+                </tbody>
+                <tfoot><tr class="border-t-2 border-gray-200"><td class="pt-3 font-semibold">Total</td><td class="pt-3 text-right font-bold text-lg">$5,600.00</td></tr></tfoot>
+              </table>
+            </div>
+
+            <!-- What's missing explanation -->
+            <div class="bg-white rounded-xl border border-gray-200 p-5">
+              <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">What the AI check would verify</p>
+              <div class="space-y-2.5">
+                <div class="flex items-center gap-3 text-sm">
+                  <div class="w-5 h-5 rounded-full border-2 border-dashed border-gray-300 shrink-0 flex items-center justify-center">
+                    <div class="w-1.5 h-1.5 rounded-full bg-gray-300"></div>
+                  </div>
+                  <span class="text-gray-400">Invoice total vs contracted amount</span>
+                  <span class="ml-auto text-xs badge-pending px-2 py-0.5 rounded-full">Awaiting extraction</span>
+                </div>
+                <div class="flex items-center gap-3 text-sm">
+                  <div class="w-5 h-5 rounded-full border-2 border-dashed border-gray-300 shrink-0 flex items-center justify-center">
+                    <div class="w-1.5 h-1.5 rounded-full bg-gray-300"></div>
+                  </div>
+                  <span class="text-gray-400">Deliverables match contract scope</span>
+                  <span class="ml-auto text-xs badge-pending px-2 py-0.5 rounded-full">Awaiting extraction</span>
+                </div>
+                <div class="flex items-center gap-3 text-sm">
+                  <div class="w-5 h-5 rounded-full border-2 border-dashed border-gray-300 shrink-0 flex items-center justify-center">
+                    <div class="w-1.5 h-1.5 rounded-full bg-gray-300"></div>
+                  </div>
+                  <span class="text-gray-400">Milestone / payment schedule compliance</span>
+                  <span class="ml-auto text-xs badge-pending px-2 py-0.5 rounded-full">Awaiting extraction</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sidebar -->
+          <div class="space-y-3">
+            <div class="bg-white rounded-xl border border-gray-200 p-4">
+              <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Actions</p>
+              <button onclick="holdForExtraction()" class="w-full bg-gray-900 hover:bg-gray-800 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors mb-2 flex items-center justify-center gap-2">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                Hold — Await AI Check
+              </button>
+              <button onclick="approveManually()" class="w-full border border-gray-300 text-gray-600 text-sm font-medium px-4 py-2.5 rounded-xl hover:bg-gray-50 transition-colors flex items-center justify-center gap-1.5">
+                <svg class="w-4 h-4 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                Approve Manually
+              </button>
+            </div>
+            <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 text-xs text-gray-500 space-y-2">
+              <p class="font-medium text-gray-700">Why hold?</p>
+              <p>Holding lets the AI verify this invoice against the contract before you decide. Approving manually bypasses compliance — any discrepancy won't be caught until an audit.</p>
+            </div>
+            <div class="bg-white rounded-xl border border-gray-200 p-4">
+              <div class="flex items-center gap-2 mb-2">
+                <svg class="w-4 h-4 text-gray-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Contract on File</p>
+              </div>
+              <div class="grid grid-cols-2 gap-x-3 gap-y-1.5 text-xs">
+                <span class="text-gray-400">Contract</span><span class="text-gray-900 font-mono">#CT-2024-0911</span>
+                <span class="text-gray-400">Type</span><span class="text-gray-400 italic">Not extracted</span>
+                <span class="text-gray-400">Uploaded</span><span class="text-gray-900">May 4, 2024</span>
+                <span class="text-gray-400">Status</span>
+                <span class="badge-pending text-xs px-2 py-0.5 rounded-full font-medium">Extraction queued</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 13: Sasha Patel — Held, awaiting extraction -->
+      <div id="t3-step-13" class="step">
+        <div class="flex flex-col items-center justify-center py-16 text-center max-w-md mx-auto">
+          <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+            <svg class="w-9 h-9 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <h2 class="text-xl font-bold text-gray-900 mb-2">Invoice Held</h2>
+          <p class="text-gray-500 text-sm mb-6">The ops team has been notified to prioritize extraction of contract #CT-2024-0911. You'll be able to review the AI check result once it's complete.</p>
+          <div class="w-full bg-white rounded-xl border border-gray-200 text-left p-5 space-y-3 text-sm mb-4">
+            <div class="flex justify-between"><span class="text-gray-400">Invoice</span><span class="font-mono text-gray-900">#INV-2024-1155</span></div>
+            <div class="flex justify-between"><span class="text-gray-400">Amount</span><span class="font-semibold text-gray-900">$5,600.00</span></div>
+            <div class="flex justify-between"><span class="text-gray-400">Contract</span><span class="font-mono text-gray-900">#CT-2024-0911</span></div>
+            <div class="flex justify-between items-center"><span class="text-gray-400">Invoice status</span><span class="badge-pending px-2.5 py-1 rounded-full text-xs font-semibold">On Hold — Awaiting AI Check</span></div>
+            <div class="flex justify-between items-center"><span class="text-gray-400">Extraction</span><span class="text-xs text-indigo-600 font-medium">Queued · Est. &lt;24 hrs</span></div>
+          </div>
+          <div class="w-full bg-indigo-50 border border-indigo-100 rounded-xl p-4 text-left text-xs text-indigo-700 mb-6">
+            <p class="font-medium mb-1">What happens next</p>
+            <p>Once the ops team extracts contract #CT-2024-0911, the AI will automatically run a compliance check on this invoice and surface it back in your inbox with a clear or flag result.</p>
+          </div>
+          <button onclick="goToInbox()" class="text-sm text-indigo-600 hover:underline">Back to inbox</button>
+        </div>
+      </div>
+
+      <!-- Step 14: Sasha Patel — Manually approved (no AI check) -->
+      <div id="t3-step-14" class="step">
+        <div class="flex flex-col items-center justify-center py-16 text-center max-w-md mx-auto">
+          <div class="w-16 h-16 bg-amber-50 rounded-full flex items-center justify-center mb-4">
+            <svg class="w-9 h-9 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+          </div>
+          <h2 class="text-xl font-bold text-gray-900 mb-2">Payment Queued</h2>
+          <p class="text-gray-500 text-sm mb-2">Invoice manually approved. $5,600 will settle to Sasha Patel in 2–5 business days via Wise.</p>
+          <p class="text-xs text-amber-600 font-medium mb-6">No AI compliance check was performed on this invoice.</p>
+          <div class="w-full bg-white rounded-xl border border-gray-200 text-left p-5 space-y-3 text-sm mb-4">
+            <div class="flex justify-between"><span class="text-gray-400">Invoice</span><span class="font-mono text-gray-900">#INV-2024-1155</span></div>
+            <div class="flex justify-between"><span class="text-gray-400">Approved by</span><span class="text-gray-900">You · May 5, 2024</span></div>
+            <div class="flex justify-between"><span class="text-gray-400">Amount</span><span class="font-semibold text-gray-900">$5,600.00</span></div>
+            <div class="flex justify-between items-center"><span class="text-gray-400">Status</span><span class="badge-queued px-2.5 py-1 rounded-full text-xs font-semibold">Payment Queued</span></div>
+            <div class="flex justify-between items-center"><span class="text-gray-400">AI check</span><span class="text-xs text-amber-600 font-medium">Bypassed — manual approval</span></div>
+          </div>
+          <div class="w-full bg-amber-50 border border-amber-200 rounded-xl p-4 text-left text-xs text-amber-800 mb-6">
+            <p class="font-medium mb-1">Compliance note</p>
+            <p>This payment was approved without an AI compliance check. If a discrepancy is later found, it will not be covered by the automated audit trail. Contract extraction for #CT-2024-0911 is still queued and will run post-payment.</p>
           </div>
           <button onclick="goToInbox()" class="text-sm text-indigo-600 hover:underline">Back to inbox</button>
         </div>
@@ -1469,7 +1664,7 @@
   </div>
 
   <script>
-    const invoiceState = { inv1147: 'pending', inv1148: 'pending' };
+    const invoiceState = { inv1147: 'pending', inv1148: 'pending', inv1151: 'pending', inv1152: 'pending', inv1155: 'pending' };
 
     function switchTab(n) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -1516,28 +1711,74 @@
     function refreshInboxBadges() {
       const b1147 = document.getElementById('badge-1147');
       const b1148 = document.getElementById('badge-1148');
+      const b1151 = document.getElementById('badge-1151');
+      const b1152 = document.getElementById('badge-1152');
       const card1148 = document.getElementById('card-1148');
+      const card1151 = document.getElementById('card-1151');
+      const card1152 = document.getElementById('card-1152');
+
+      const QUEUED_SVG = '<svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>';
+      const REJECT_SVG = '<svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>';
+      const QUEUED_CLS = 'badge-queued px-2.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1';
+      const REJECT_CLS = 'badge-reject px-2.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1';
+
+      function markDone(card) {
+        card.classList.add('opacity-60', 'cursor-default');
+        card.onclick = null;
+      }
 
       if (invoiceState.inv1147 === 'approved') {
-        b1147.className = 'badge-queued px-2.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1';
-        b1147.innerHTML = '<svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg> Payment Queued';
+        b1147.className = QUEUED_CLS;
+        b1147.innerHTML = QUEUED_SVG + ' Payment Queued';
         document.getElementById('card-1147').classList.remove('hover:border-indigo-300');
-        document.getElementById('card-1147').classList.add('opacity-60', 'cursor-default');
-        document.getElementById('card-1147').onclick = null;
+        markDone(document.getElementById('card-1147'));
       }
 
       if (invoiceState.inv1148 === 'rejected') {
-        b1148.className = 'badge-reject px-2.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1';
-        b1148.innerHTML = '<svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg> Rejected';
+        b1148.className = REJECT_CLS;
+        b1148.innerHTML = REJECT_SVG + ' Rejected';
         card1148.classList.remove('border-amber-300', 'hover:border-amber-400');
-        card1148.classList.add('border-gray-200', 'opacity-60', 'cursor-default');
-        card1148.onclick = null;
+        card1148.classList.add('border-gray-200');
+        markDone(card1148);
       } else if (invoiceState.inv1148 === 'approved') {
-        b1148.className = 'badge-queued px-2.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1';
-        b1148.innerHTML = '<svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg> Payment Queued — Override Logged';
+        b1148.className = QUEUED_CLS;
+        b1148.innerHTML = QUEUED_SVG + ' Payment Queued — Override Logged';
         card1148.classList.remove('border-amber-300', 'hover:border-amber-400');
-        card1148.classList.add('border-gray-200', 'opacity-60', 'cursor-default');
-        card1148.onclick = null;
+        card1148.classList.add('border-gray-200');
+        markDone(card1148);
+      }
+
+      if (invoiceState.inv1151 === 'approved') {
+        b1151.className = QUEUED_CLS;
+        b1151.innerHTML = QUEUED_SVG + ' Payment Queued';
+        card1151.classList.remove('hover:border-indigo-300');
+        markDone(card1151);
+      }
+
+      if (invoiceState.inv1152 === 'rejected') {
+        b1152.className = REJECT_CLS;
+        b1152.innerHTML = REJECT_SVG + ' Rejected';
+        card1152.classList.remove('border-amber-300', 'hover:border-amber-400');
+        card1152.classList.add('border-gray-200');
+        markDone(card1152);
+      } else if (invoiceState.inv1152 === 'approved') {
+        b1152.className = QUEUED_CLS;
+        b1152.innerHTML = QUEUED_SVG + ' Payment Queued — Override Logged';
+        card1152.classList.remove('border-amber-300', 'hover:border-amber-400');
+        card1152.classList.add('border-gray-200');
+        markDone(card1152);
+      }
+
+      const b1155   = document.getElementById('badge-1155');
+      const card1155 = document.getElementById('card-1155');
+      if (invoiceState.inv1155 === 'held') {
+        b1155.className = 'badge-pending px-2.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1';
+        b1155.innerHTML = '<svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> On Hold — Awaiting AI Check';
+        markDone(card1155);
+      } else if (invoiceState.inv1155 === 'approved') {
+        b1155.className = QUEUED_CLS;
+        b1155.innerHTML = QUEUED_SVG + ' Payment Queued — Manual Approval';
+        markDone(card1155);
       }
     }
 
@@ -1559,6 +1800,28 @@
     function rejectError() {
       invoiceState.inv1148 = 'rejected';
       showStep('t3', 5);
+    }
+
+    function approveJordan() {
+      invoiceState.inv1151 = 'approved';
+      showStep('t3', 8);
+    }
+
+    function rejectMarcus() {
+      invoiceState.inv1152 = 'rejected';
+      showStep('t3', 10);
+    }
+
+    function holdForExtraction() {
+      invoiceState.inv1155 = 'held';
+      showStep('t3', 13);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function approveManually() {
+      invoiceState.inv1155 = 'approved';
+      showStep('t3', 14);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function openDisputeThread() {
@@ -1602,6 +1865,7 @@
       }
       hideApproveModal();
       if (currentApproveTarget === 'inv1152') {
+        invoiceState.inv1152 = 'approved';
         showStep('t3', 11);
       } else {
         invoiceState.inv1148 = 'approved';
