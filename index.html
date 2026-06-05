@@ -25,6 +25,9 @@
     .badge-reject  { background:#fee2e2; color:#991b1b; border:1px solid #fecaca; }
     .badge-pending { background:#f3f4f6; color:#374151; border:1px solid #d1d5db; }
     .comparison-col { flex:1; padding:16px; }
+    @media (max-width: 640px) { .comparison-col { padding: 10px; } }
+    .tab-scroll { overflow-x: auto; scrollbar-width: none; }
+    .tab-scroll::-webkit-scrollbar { display: none; }
     .modal-overlay {
       position:fixed; inset:0; background:rgba(0,0,0,0.4);
       display:flex; align-items:center; justify-content:center; z-index:50;
@@ -39,43 +42,43 @@
 <body class="bg-gray-50 min-h-screen">
 
   <!-- Header -->
-  <header class="bg-white border-b border-gray-200 px-6 py-4 flex items-center gap-3">
-    <div class="flex items-center gap-2">
+  <header class="bg-white border-b border-gray-200 px-4 sm:px-6 py-3 sm:py-4 flex items-center gap-2 sm:gap-3">
+    <div class="flex items-center gap-2 shrink-0">
       <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
         <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
         </svg>
       </div>
-      <span class="font-semibold text-gray-900 text-lg">Payonroll</span>
+      <span class="font-semibold text-gray-900 text-base sm:text-lg">Payonroll</span>
     </div>
-    <div class="h-5 w-px bg-gray-300"></div>
-    <span class="text-sm text-gray-500">AI Contract Compliance Monitor — Prototype</span>
-    <span class="ml-auto text-xs bg-indigo-50 text-indigo-700 border border-indigo-200 px-2 py-1 rounded-full font-medium">v1 Draft</span>
+    <div class="h-5 w-px bg-gray-300 hidden sm:block shrink-0"></div>
+    <span class="text-xs sm:text-sm text-gray-500 hidden sm:inline truncate">AI Contract Compliance Monitor — Prototype</span>
+    <span class="ml-auto text-xs bg-indigo-50 text-indigo-700 border border-indigo-200 px-2 py-1 rounded-full font-medium shrink-0">v1 Draft</span>
   </header>
 
   <!-- Tab Nav — 4 tabs -->
-  <div class="bg-white border-b border-gray-200 px-6">
-    <div class="flex gap-0 max-w-5xl mx-auto">
+  <div class="bg-white border-b border-gray-200">
+    <div class="tab-scroll flex gap-0 max-w-5xl mx-auto px-1 sm:px-6">
       <button onclick="switchTab(1)" id="tab-btn-1"
-        class="tab-btn px-5 py-3.5 text-sm font-medium border-b-2 border-indigo-600 text-indigo-600 -mb-px transition-colors">
+        class="tab-btn px-3 sm:px-5 py-3 sm:py-3.5 text-xs sm:text-sm font-medium border-b-2 border-indigo-600 text-indigo-600 -mb-px transition-colors whitespace-nowrap">
         Contractor — Happy Path
       </button>
       <button onclick="switchTab(2)" id="tab-btn-2"
-        class="tab-btn px-5 py-3.5 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 -mb-px transition-colors">
+        class="tab-btn px-3 sm:px-5 py-3 sm:py-3.5 text-xs sm:text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 -mb-px transition-colors whitespace-nowrap">
         Contractor — Error Path
       </button>
       <button onclick="switchTab(3)" id="tab-btn-3"
-        class="tab-btn px-5 py-3.5 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 -mb-px transition-colors">
+        class="tab-btn px-3 sm:px-5 py-3 sm:py-3.5 text-xs sm:text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 -mb-px transition-colors whitespace-nowrap">
         Client View
       </button>
       <button onclick="switchTab(4)" id="tab-btn-4"
-        class="tab-btn px-5 py-3.5 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 -mb-px transition-colors">
+        class="tab-btn px-3 sm:px-5 py-3 sm:py-3.5 text-xs sm:text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 -mb-px transition-colors whitespace-nowrap">
         Ops View
       </button>
     </div>
   </div>
 
-  <main class="max-w-5xl mx-auto px-6 py-8">
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
 
     <!-- ═══════════════════════════════════════
          TAB 1 — CONTRACTOR HAPPY PATH
@@ -89,8 +92,8 @@
           <h2 class="text-xl font-semibold text-gray-900">Submit Invoice</h2>
           <p class="text-sm text-gray-500 mt-1">Review your invoice before submission. The AI compliance check runs automatically.</p>
         </div>
-        <div class="grid grid-cols-3 gap-6">
-          <div class="col-span-2 space-y-5">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div class="md:col-span-2 space-y-5">
             <div class="bg-white rounded-xl border border-gray-200 p-5">
               <div class="flex items-center justify-between mb-4">
                 <h3 class="text-sm font-semibold text-gray-700">Contract Details</h3>
@@ -172,7 +175,7 @@
           <span class="ml-auto text-xs bg-green-100 text-green-700 px-2.5 py-1 rounded-full font-semibold whitespace-nowrap">Confidence 97%</span>
         </div>
         <div class="bg-white rounded-xl border border-gray-200 overflow-hidden mb-5">
-          <div class="px-5 py-3 bg-gray-50 border-b border-gray-200">
+          <div class="px-4 sm:px-5 py-3 bg-gray-50 border-b border-gray-200">
             <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Contract vs. Invoice Comparison</p>
           </div>
           <div class="flex divide-x divide-gray-100">
@@ -202,7 +205,7 @@
           </div>
           <h2 class="text-xl font-bold text-gray-900 mb-2">Invoice Submitted</h2>
           <p class="text-gray-500 text-sm mb-6">Your invoice is awaiting client approval. You'll be notified when it's reviewed.</p>
-          <div class="w-full bg-white rounded-xl border border-gray-200 text-left p-5 space-y-3 text-sm mb-6">
+          <div class="w-full bg-white rounded-xl border border-gray-200 text-left p-4 sm:p-5 space-y-3 text-sm mb-6">
             <div class="flex justify-between"><span class="text-gray-400">Invoice ID</span><span class="font-mono text-gray-900">#INV-2024-1147</span></div>
             <div class="flex justify-between"><span class="text-gray-400">Submitted</span><span class="text-gray-900">May 1, 2024 at 10:42 AM</span></div>
             <div class="flex justify-between"><span class="text-gray-400">Amount</span><span class="font-semibold text-gray-900">$11,200.00</span></div>
@@ -226,8 +229,8 @@
           <h2 class="text-xl font-semibold text-gray-900">Submit Invoice</h2>
           <p class="text-sm text-gray-500 mt-1">Review your invoice before submission. The AI compliance check runs automatically.</p>
         </div>
-        <div class="grid grid-cols-3 gap-6">
-          <div class="col-span-2 space-y-5">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div class="md:col-span-2 space-y-5">
             <div class="bg-white rounded-xl border border-gray-200 p-5">
               <div class="flex items-center justify-between mb-4">
                 <h3 class="text-sm font-semibold text-gray-700">Contract Details</h3>
@@ -387,7 +390,7 @@
                 <p class="text-xs text-gray-400 font-mono">#INV-2024-1147</p>
               </div>
             </div>
-            <div class="flex items-center gap-3 mt-4 pt-4 border-t border-gray-100">
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-2 mt-4 pt-4 border-t border-gray-100">
               <span id="badge-1147" class="badge-clear px-2.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
                 <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
                 Matches Contract
@@ -412,7 +415,7 @@
                 <p class="text-xs text-gray-400 font-mono">#INV-2024-1148</p>
               </div>
             </div>
-            <div class="flex items-center gap-3 mt-4 pt-4 border-t border-amber-100">
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-2 mt-4 pt-4 border-t border-amber-100">
               <span id="badge-1148" class="badge-hold px-2.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
                 <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01"/></svg>
                 Mismatch Detected — Review Required
@@ -437,7 +440,7 @@
                 <p class="text-xs text-gray-400 font-mono">#INV-2024-1151</p>
               </div>
             </div>
-            <div class="flex items-center gap-3 mt-4 pt-4 border-t border-gray-100">
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-2 mt-4 pt-4 border-t border-gray-100">
               <span id="badge-1151" class="badge-clear px-2.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
                 <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
                 Matches Contract
@@ -462,7 +465,7 @@
                 <p class="text-xs text-gray-400 font-mono">#INV-2024-1155</p>
               </div>
             </div>
-            <div class="flex items-center gap-3 mt-4 pt-4 border-t border-gray-100">
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-2 mt-4 pt-4 border-t border-gray-100">
               <span id="badge-1155" class="badge-pending px-2.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
                 <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 Contract Not Extracted — No AI Check
@@ -487,7 +490,7 @@
                 <p class="text-xs text-gray-400 font-mono">#INV-2024-1152</p>
               </div>
             </div>
-            <div class="flex items-center gap-3 mt-4 pt-4 border-t border-amber-100">
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-2 mt-4 pt-4 border-t border-amber-100">
               <span id="badge-1152" class="badge-hold px-2.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
                 <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01"/></svg>
                 Hours Exceeded — Review Required
@@ -520,8 +523,8 @@
             <p class="text-sm text-green-700">AI check complete · Contract #CT-2024-0891 · Confidence 97%</p>
           </div>
         </div>
-        <div class="grid grid-cols-3 gap-5 mb-5">
-          <div class="col-span-2 space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 mb-5">
+          <div class="md:col-span-2 space-y-4">
             <div class="bg-white rounded-xl border border-gray-200 p-5">
               <div class="grid grid-cols-2 gap-4 text-sm mb-4">
                 <div><span class="text-gray-400">From</span><p class="font-medium text-gray-900 mt-0.5">Alex Rivera</p></div>
@@ -574,7 +577,7 @@
           </div>
           <h2 class="text-xl font-bold text-gray-900 mb-2">Payment Queued</h2>
           <p class="text-gray-500 text-sm mb-6">Invoice approved. Funds will settle to Alex Rivera in 2–5 business days via Wise.</p>
-          <div class="w-full bg-white rounded-xl border border-gray-200 text-left p-5 space-y-3 text-sm mb-6">
+          <div class="w-full bg-white rounded-xl border border-gray-200 text-left p-4 sm:p-5 space-y-3 text-sm mb-6">
             <div class="flex justify-between"><span class="text-gray-400">Invoice</span><span class="font-mono text-gray-900">#INV-2024-1147</span></div>
             <div class="flex justify-between"><span class="text-gray-400">Approved by</span><span class="text-gray-900">You · May 1, 2024 at 11:05 AM</span></div>
             <div class="flex justify-between"><span class="text-gray-400">Amount</span><span class="font-semibold text-gray-900">$11,200.00</span></div>
@@ -613,7 +616,7 @@
           <div class="grid grid-cols-3 gap-3">
             <div class="bg-white rounded-lg p-3 text-center border border-amber-200">
               <p class="text-xs text-gray-400 mb-1">Contract Term</p>
-              <p class="text-xl font-bold text-gray-900">$11,200</p>
+              <p class="text-base sm:text-xl font-bold text-gray-900">$11,200</p>
               <p class="text-xs text-gray-400 mt-1">Fixed-fee signed Mar 14</p>
             </div>
             <div class="flex items-center justify-center">
@@ -625,14 +628,14 @@
             </div>
             <div class="bg-red-50 rounded-lg p-3 text-center border border-red-200">
               <p class="text-xs text-gray-400 mb-1">Invoice Claim</p>
-              <p class="text-xl font-bold text-red-600">$14,000</p>
+              <p class="text-base sm:text-xl font-bold text-red-600">$14,000</p>
               <p class="text-xs text-gray-400 mt-1">#INV-2024-1148</p>
             </div>
           </div>
         </div>
 
-        <div class="grid grid-cols-3 gap-5">
-          <div class="col-span-2 space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
+          <div class="md:col-span-2 space-y-4">
             <div class="bg-white rounded-xl border border-gray-200 p-5 opacity-80">
               <div class="grid grid-cols-2 gap-4 text-sm mb-4">
                 <div><span class="text-gray-400">From</span><p class="font-medium text-gray-900 mt-0.5">Alex Rivera</p></div>
@@ -740,7 +743,7 @@
           </div>
           <h2 class="text-xl font-bold text-gray-900 mb-2">Invoice Rejected</h2>
           <p class="text-gray-500 text-sm mb-6">Alex Rivera has been notified. No payment will be processed for this invoice.</p>
-          <div class="w-full bg-white rounded-xl border border-gray-200 text-left p-5 space-y-3 text-sm mb-6">
+          <div class="w-full bg-white rounded-xl border border-gray-200 text-left p-4 sm:p-5 space-y-3 text-sm mb-6">
             <div class="flex justify-between"><span class="text-gray-400">Invoice</span><span class="font-mono text-gray-900">#INV-2024-1148</span></div>
             <div class="flex justify-between"><span class="text-gray-400">Rejected by</span><span class="text-gray-900">You · May 1, 2024 at 11:09 AM</span></div>
             <div class="flex justify-between"><span class="text-gray-400">Amount</span><span class="font-semibold text-gray-900">$14,000.00</span></div>
@@ -762,7 +765,7 @@
           </div>
           <h2 class="text-xl font-bold text-gray-900 mb-2">Payment Queued</h2>
           <p class="text-gray-500 text-sm mb-6">Invoice approved with override reason logged. $14,000 will settle to Alex Rivera in 2–5 business days via Wise.</p>
-          <div class="w-full bg-white rounded-xl border border-gray-200 text-left p-5 space-y-3 text-sm mb-6">
+          <div class="w-full bg-white rounded-xl border border-gray-200 text-left p-4 sm:p-5 space-y-3 text-sm mb-6">
             <div class="flex justify-between"><span class="text-gray-400">Invoice</span><span class="font-mono text-gray-900">#INV-2024-1148</span></div>
             <div class="flex justify-between"><span class="text-gray-400">Approved by</span><span class="text-gray-900">You · May 1, 2024 at 11:12 AM</span></div>
             <div class="flex justify-between"><span class="text-gray-400">Amount</span><span class="font-semibold text-gray-900">$14,000.00</span></div>
@@ -793,8 +796,8 @@
             <p class="text-sm text-green-700">AI check complete · Contract #CT-2024-0887 · Confidence 95%</p>
           </div>
         </div>
-        <div class="grid grid-cols-3 gap-5 mb-5">
-          <div class="col-span-2 space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 mb-5">
+          <div class="md:col-span-2 space-y-4">
             <div class="bg-white rounded-xl border border-gray-200 p-5">
               <div class="grid grid-cols-2 gap-4 text-sm mb-4">
                 <div><span class="text-gray-400">From</span><p class="font-medium text-gray-900 mt-0.5">Jordan Kim</p></div>
@@ -864,7 +867,7 @@
           </div>
           <h2 class="text-xl font-bold text-gray-900 mb-2">Payment Queued</h2>
           <p class="text-gray-500 text-sm mb-6">Invoice approved. Funds will settle to Jordan Kim in 2–5 business days via Wise.</p>
-          <div class="w-full bg-white rounded-xl border border-gray-200 text-left p-5 space-y-3 text-sm mb-6">
+          <div class="w-full bg-white rounded-xl border border-gray-200 text-left p-4 sm:p-5 space-y-3 text-sm mb-6">
             <div class="flex justify-between"><span class="text-gray-400">Invoice</span><span class="font-mono text-gray-900">#INV-2024-1151</span></div>
             <div class="flex justify-between"><span class="text-gray-400">Contract type</span><span class="text-gray-900">Monthly Retainer</span></div>
             <div class="flex justify-between"><span class="text-gray-400">Approved by</span><span class="text-gray-900">You · May 2, 2024 at 9:41 AM</span></div>
@@ -904,7 +907,7 @@
           <div class="grid grid-cols-3 gap-3">
             <div class="bg-white rounded-lg p-3 text-center border border-amber-200">
               <p class="text-xs text-gray-400 mb-1">Contract Max</p>
-              <p class="text-xl font-bold text-gray-900">$3,120</p>
+              <p class="text-base sm:text-xl font-bold text-gray-900">$3,120</p>
               <p class="text-xs text-gray-400 mt-1">48 hrs × $65/hr</p>
             </div>
             <div class="flex items-center justify-center">
@@ -916,14 +919,14 @@
             </div>
             <div class="bg-red-50 rounded-lg p-3 text-center border border-red-200">
               <p class="text-xs text-gray-400 mb-1">Invoice Claim</p>
-              <p class="text-xl font-bold text-red-600">$3,900</p>
+              <p class="text-base sm:text-xl font-bold text-red-600">$3,900</p>
               <p class="text-xs text-gray-400 mt-1">60 hrs × $65/hr</p>
             </div>
           </div>
         </div>
 
-        <div class="grid grid-cols-3 gap-5">
-          <div class="col-span-2 space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
+          <div class="md:col-span-2 space-y-4">
             <div class="bg-white rounded-xl border border-gray-200 p-5 opacity-80">
               <div class="grid grid-cols-2 gap-4 text-sm mb-4">
                 <div><span class="text-gray-400">From</span><p class="font-medium text-gray-900 mt-0.5">Marcus Chen</p></div>
@@ -993,7 +996,7 @@
           </div>
           <h2 class="text-xl font-bold text-gray-900 mb-2">Invoice Rejected</h2>
           <p class="text-gray-500 text-sm mb-6">Marcus Chen has been notified. No payment will be processed for this invoice.</p>
-          <div class="w-full bg-white rounded-xl border border-gray-200 text-left p-5 space-y-3 text-sm mb-6">
+          <div class="w-full bg-white rounded-xl border border-gray-200 text-left p-4 sm:p-5 space-y-3 text-sm mb-6">
             <div class="flex justify-between"><span class="text-gray-400">Invoice</span><span class="font-mono text-gray-900">#INV-2024-1152</span></div>
             <div class="flex justify-between"><span class="text-gray-400">Rejected by</span><span class="text-gray-900">You · May 3, 2024</span></div>
             <div class="flex justify-between"><span class="text-gray-400">Amount</span><span class="font-semibold text-gray-900">$3,900.00</span></div>
@@ -1015,7 +1018,7 @@
           </div>
           <h2 class="text-xl font-bold text-gray-900 mb-2">Payment Queued</h2>
           <p class="text-gray-500 text-sm mb-6">Invoice approved with override reason logged. $3,900 will settle to Marcus Chen in 2–5 business days via Wise.</p>
-          <div class="w-full bg-white rounded-xl border border-gray-200 text-left p-5 space-y-3 text-sm mb-6">
+          <div class="w-full bg-white rounded-xl border border-gray-200 text-left p-4 sm:p-5 space-y-3 text-sm mb-6">
             <div class="flex justify-between"><span class="text-gray-400">Invoice</span><span class="font-mono text-gray-900">#INV-2024-1152</span></div>
             <div class="flex justify-between"><span class="text-gray-400">Approved by</span><span class="text-gray-900">You · May 3, 2024</span></div>
             <div class="flex justify-between"><span class="text-gray-400">Amount</span><span class="font-semibold text-gray-900">$3,900.00</span></div>
@@ -1047,7 +1050,7 @@
             <div class="flex-1">
               <p class="font-semibold text-gray-700 mb-1">AI check unavailable — contract not yet extracted</p>
               <p class="text-sm text-gray-500">Contract <span class="font-mono text-gray-700">#CT-2024-0911</span> was uploaded on May 4, 2024 but hasn't been processed yet. Until extraction completes, the AI can't verify this invoice against the contract terms.</p>
-              <div class="mt-3 flex items-center gap-4 text-xs">
+              <div class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs">
                 <div class="flex items-center gap-1.5 text-gray-400">
                   <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                   Contract uploaded: May 4, 2024
@@ -1065,8 +1068,8 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-3 gap-5">
-          <div class="col-span-2 space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
+          <div class="md:col-span-2 space-y-4">
             <div class="bg-white rounded-xl border border-gray-200 p-5">
               <div class="grid grid-cols-2 gap-4 text-sm mb-4">
                 <div><span class="text-gray-400">From</span><p class="font-medium text-gray-900 mt-0.5">Sasha Patel</p></div>
@@ -1089,26 +1092,26 @@
             <div class="bg-white rounded-xl border border-gray-200 p-5">
               <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">What the AI check would verify</p>
               <div class="space-y-2.5">
-                <div class="flex items-center gap-3 text-sm">
+                <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
                   <div class="w-5 h-5 rounded-full border-2 border-dashed border-gray-300 shrink-0 flex items-center justify-center">
                     <div class="w-1.5 h-1.5 rounded-full bg-gray-300"></div>
                   </div>
-                  <span class="text-gray-400">Invoice total vs contracted amount</span>
-                  <span class="ml-auto text-xs badge-pending px-2 py-0.5 rounded-full">Awaiting extraction</span>
+                  <span class="text-gray-400 flex-1 min-w-0">Invoice total vs contracted amount</span>
+                  <span class="text-xs badge-pending px-2 py-0.5 rounded-full shrink-0">Awaiting extraction</span>
                 </div>
-                <div class="flex items-center gap-3 text-sm">
+                <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
                   <div class="w-5 h-5 rounded-full border-2 border-dashed border-gray-300 shrink-0 flex items-center justify-center">
                     <div class="w-1.5 h-1.5 rounded-full bg-gray-300"></div>
                   </div>
-                  <span class="text-gray-400">Deliverables match contract scope</span>
-                  <span class="ml-auto text-xs badge-pending px-2 py-0.5 rounded-full">Awaiting extraction</span>
+                  <span class="text-gray-400 flex-1 min-w-0">Deliverables match contract scope</span>
+                  <span class="text-xs badge-pending px-2 py-0.5 rounded-full shrink-0">Awaiting extraction</span>
                 </div>
-                <div class="flex items-center gap-3 text-sm">
+                <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
                   <div class="w-5 h-5 rounded-full border-2 border-dashed border-gray-300 shrink-0 flex items-center justify-center">
                     <div class="w-1.5 h-1.5 rounded-full bg-gray-300"></div>
                   </div>
-                  <span class="text-gray-400">Milestone / payment schedule compliance</span>
-                  <span class="ml-auto text-xs badge-pending px-2 py-0.5 rounded-full">Awaiting extraction</span>
+                  <span class="text-gray-400 flex-1 min-w-0">Milestone / payment schedule compliance</span>
+                  <span class="text-xs badge-pending px-2 py-0.5 rounded-full shrink-0">Awaiting extraction</span>
                 </div>
               </div>
             </div>
@@ -1210,7 +1213,7 @@
         </div>
 
         <!-- Metrics row -->
-        <div class="grid grid-cols-4 gap-3 mb-6">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
           <div class="bg-white rounded-xl border border-gray-200 p-4 text-center">
             <p class="text-2xl font-bold text-gray-900">8</p>
             <p class="text-xs text-gray-400 mt-1">Flags this week</p>
@@ -1231,13 +1234,13 @@
 
         <!-- Queue list -->
         <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
-          <div class="px-5 py-3 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
+          <div class="px-4 sm:px-5 py-3 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
             <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Queue Items</p>
             <span class="text-xs text-gray-400">Oldest first</span>
           </div>
 
           <!-- Item 1: Flag dispute -->
-          <div onclick="showStep('t4', 2)" class="px-5 py-4 border-b border-gray-100 flex items-center gap-4 hover:bg-gray-50 cursor-pointer group transition-colors">
+          <div onclick="showStep('t4', 2)" class="px-4 sm:px-5 py-4 border-b border-gray-100 flex items-start sm:items-center gap-3 sm:gap-4 hover:bg-gray-50 cursor-pointer group transition-colors">
             <span class="shrink-0 text-xs font-bold px-2.5 py-1 rounded-full badge-hold">DISPUTE</span>
             <div class="flex-1 min-w-0">
               <p class="text-sm font-semibold text-gray-900 group-hover:text-indigo-700 transition-colors">Invoice #INV-2024-1148 · Alex Rivera vs Meridian Digital Co.</p>
@@ -1250,7 +1253,7 @@
           </div>
 
           <!-- Item 2: Low-confidence extraction -->
-          <div onclick="showStep('t4', 4)" class="px-5 py-4 border-b border-gray-100 flex items-center gap-4 hover:bg-gray-50 cursor-pointer group transition-colors">
+          <div onclick="showStep('t4', 4)" class="px-4 sm:px-5 py-4 border-b border-gray-100 flex items-start sm:items-center gap-3 sm:gap-4 hover:bg-gray-50 cursor-pointer group transition-colors">
             <span class="shrink-0 text-xs font-bold px-2.5 py-1 rounded-full bg-purple-100 text-purple-800 border border-purple-200">LOW CONF</span>
             <div class="flex-1 min-w-0">
               <p class="text-sm font-semibold text-gray-900 group-hover:text-indigo-700 transition-colors">Contract #CT-2024-0923 · Priya Mehta / NovaSoft Ltd.</p>
@@ -1263,7 +1266,7 @@
           </div>
 
           <!-- Item 3: Auto-logged override -->
-          <div onclick="showStep('t4', 6)" class="px-5 py-4 flex items-center gap-4 hover:bg-gray-50 cursor-pointer group transition-colors">
+          <div onclick="showStep('t4', 6)" class="px-4 sm:px-5 py-4 flex items-start sm:items-center gap-3 sm:gap-4 hover:bg-gray-50 cursor-pointer group transition-colors">
             <span class="shrink-0 text-xs font-bold px-2.5 py-1 rounded-full bg-gray-100 text-gray-600 border border-gray-200">OVERRIDE</span>
             <div class="flex-1 min-w-0">
               <p class="text-sm font-semibold text-gray-900 group-hover:text-indigo-700 transition-colors">Invoice #INV-2024-1139 · Dara Osei / Beacon Media</p>
@@ -1289,9 +1292,9 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-3 gap-5">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
           <!-- Left: Context -->
-          <div class="col-span-2 space-y-4">
+          <div class="md:col-span-2 space-y-4">
 
             <!-- Dispute thread (read-only, full) -->
             <div class="bg-white rounded-xl border border-gray-200 p-5">
@@ -1480,8 +1483,8 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-3 gap-5">
-          <div class="col-span-2">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
+          <div class="md:col-span-2">
             <div class="bg-white rounded-xl border border-gray-200 p-5 mb-4">
               <div class="grid grid-cols-2 gap-4 text-sm mb-4 pb-4 border-b border-gray-100">
                 <div><span class="text-gray-400">Contractor</span><p class="font-medium text-gray-900 mt-0.5">Priya Mehta</p></div>
@@ -1495,34 +1498,34 @@
 
                 <!-- High confidence — read only -->
                 <div class="flex items-center gap-4 py-3">
-                  <div class="w-36 shrink-0"><p class="text-xs text-gray-400">Contract Type</p></div>
+                  <div class="w-24 sm:w-36 shrink-0"><p class="text-xs text-gray-400">Contract Type</p></div>
                   <div class="flex-1"><p class="text-sm text-gray-900 font-medium">Milestone-Based</p></div>
                   <span class="shrink-0 text-xs text-green-600 font-semibold bg-green-50 border border-green-200 px-2 py-0.5 rounded-full">96%</span>
                 </div>
                 <div class="flex items-center gap-4 py-3">
-                  <div class="w-36 shrink-0"><p class="text-xs text-gray-400">Total Amount</p></div>
+                  <div class="w-24 sm:w-36 shrink-0"><p class="text-xs text-gray-400">Total Amount</p></div>
                   <div class="flex-1"><p class="text-sm text-gray-900 font-medium">$28,500.00</p></div>
                   <span class="shrink-0 text-xs text-green-600 font-semibold bg-green-50 border border-green-200 px-2 py-0.5 rounded-full">92%</span>
                 </div>
                 <div class="flex items-center gap-4 py-3">
-                  <div class="w-36 shrink-0"><p class="text-xs text-gray-400">Currency</p></div>
+                  <div class="w-24 sm:w-36 shrink-0"><p class="text-xs text-gray-400">Currency</p></div>
                   <div class="flex-1"><p class="text-sm text-gray-900 font-medium">USD</p></div>
                   <span class="shrink-0 text-xs text-green-600 font-semibold bg-green-50 border border-green-200 px-2 py-0.5 rounded-full">99%</span>
                 </div>
                 <div class="flex items-center gap-4 py-3">
-                  <div class="w-36 shrink-0"><p class="text-xs text-gray-400">Milestone 1</p></div>
+                  <div class="w-24 sm:w-36 shrink-0"><p class="text-xs text-gray-400">Milestone 1</p></div>
                   <div class="flex-1"><p class="text-sm text-gray-900 font-medium">MVP Development · $14,000</p></div>
                   <span class="shrink-0 text-xs text-green-600 font-semibold bg-green-50 border border-green-200 px-2 py-0.5 rounded-full">88%</span>
                 </div>
                 <div class="flex items-center gap-4 py-3">
-                  <div class="w-36 shrink-0"><p class="text-xs text-gray-400">Milestone 2</p></div>
+                  <div class="w-24 sm:w-36 shrink-0"><p class="text-xs text-gray-400">Milestone 2</p></div>
                   <div class="flex-1"><p class="text-sm text-gray-900 font-medium">Beta Launch · $14,500</p></div>
                   <span class="shrink-0 text-xs text-green-600 font-semibold bg-green-50 border border-green-200 px-2 py-0.5 rounded-full">83%</span>
                 </div>
 
                 <!-- Low confidence — editable -->
                 <div class="flex items-center gap-4 py-3 bg-amber-50 -mx-5 px-5 rounded">
-                  <div class="w-36 shrink-0">
+                  <div class="w-24 sm:w-36 shrink-0">
                     <p class="text-xs text-gray-400">Payment Terms</p>
                     <p class="text-xs text-amber-600 font-medium mt-0.5">Needs review</p>
                   </div>
@@ -1533,7 +1536,7 @@
                   <span class="shrink-0 text-xs text-amber-700 font-semibold bg-amber-100 border border-amber-200 px-2 py-0.5 rounded-full">61%</span>
                 </div>
                 <div class="flex items-center gap-4 py-3 bg-amber-50 -mx-5 px-5 rounded">
-                  <div class="w-36 shrink-0">
+                  <div class="w-24 sm:w-36 shrink-0">
                     <p class="text-xs text-gray-400">End Date</p>
                     <p class="text-xs text-amber-600 font-medium mt-0.5">Needs review</p>
                   </div>
@@ -1643,7 +1646,7 @@
 
   <!-- Approve with Reason Modal -->
   <div id="approve-modal" class="modal-overlay hidden">
-    <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-md mx-4 sm:mx-0 p-5 sm:p-6">
       <div class="flex items-center gap-3 mb-4">
         <div class="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center">
           <svg class="w-5 h-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
