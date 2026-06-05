@@ -52,7 +52,7 @@
     <span class="ml-auto text-xs bg-indigo-50 text-indigo-700 border border-indigo-200 px-2 py-1 rounded-full font-medium">v1 Draft</span>
   </header>
 
-  <!-- Tab Nav — 3 tabs -->
+  <!-- Tab Nav — 4 tabs -->
   <div class="bg-white border-b border-gray-200 px-6">
     <div class="flex gap-0 max-w-5xl mx-auto">
       <button onclick="switchTab(1)" id="tab-btn-1"
@@ -66,6 +66,10 @@
       <button onclick="switchTab(3)" id="tab-btn-3"
         class="tab-btn px-5 py-3.5 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 -mb-px transition-colors">
         Client View
+      </button>
+      <button onclick="switchTab(4)" id="tab-btn-4"
+        class="tab-btn px-5 py-3.5 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 -mb-px transition-colors">
+        Ops View
       </button>
     </div>
   </div>
@@ -667,6 +671,449 @@
         </div>
       </div>
     </div>
+    <!-- ═══════════════════════════════════════
+         TAB 4 — OPS VIEW
+    ═══════════════════════════════════════ -->
+    <div id="tab-4" class="tab-content">
+
+      <!-- Step 1: Ops Queue -->
+      <div id="t4-step-1" class="step active">
+        <div class="mb-6">
+          <p class="text-xs text-gray-500 uppercase tracking-wide font-medium mb-1">Ops View · Risk Team</p>
+          <h2 class="text-xl font-semibold text-gray-900">Review Queue</h2>
+          <p class="text-sm text-gray-500 mt-1">Disputed flags and low-confidence extractions routed for human review. Rulings feed model retraining.</p>
+        </div>
+
+        <!-- Metrics row -->
+        <div class="grid grid-cols-4 gap-3 mb-6">
+          <div class="bg-white rounded-xl border border-gray-200 p-4 text-center">
+            <p class="text-2xl font-bold text-gray-900">8</p>
+            <p class="text-xs text-gray-400 mt-1">Flags this week</p>
+          </div>
+          <div class="bg-white rounded-xl border border-gray-200 p-4 text-center">
+            <p class="text-2xl font-bold text-amber-600">37%</p>
+            <p class="text-xs text-gray-400 mt-1">Client override rate</p>
+          </div>
+          <div class="bg-white rounded-xl border border-red-200 p-4 text-center">
+            <p class="text-2xl font-bold text-red-600">24%</p>
+            <p class="text-xs text-red-500 mt-1 font-medium">False positive rate <span class="font-normal text-gray-400">target &lt;15%</span></p>
+          </div>
+          <div class="bg-white rounded-xl border border-indigo-100 p-4 text-center">
+            <p class="text-2xl font-bold text-indigo-600">3</p>
+            <p class="text-xs text-gray-400 mt-1">Pending review</p>
+          </div>
+        </div>
+
+        <!-- Queue list -->
+        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+          <div class="px-5 py-3 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
+            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Queue Items</p>
+            <span class="text-xs text-gray-400">Oldest first</span>
+          </div>
+
+          <!-- Item 1: Flag dispute -->
+          <div onclick="showStep('t4', 2)" class="px-5 py-4 border-b border-gray-100 flex items-center gap-4 hover:bg-gray-50 cursor-pointer group transition-colors">
+            <span class="shrink-0 text-xs font-bold px-2.5 py-1 rounded-full badge-hold">DISPUTE</span>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-semibold text-gray-900 group-hover:text-indigo-700 transition-colors">Invoice #INV-2024-1148 · Alex Rivera vs Meridian Digital Co.</p>
+              <p class="text-xs text-gray-400 mt-0.5">Amount mismatch: $14,000 claimed vs $11,200 contracted (+$2,800). Both parties have responded.</p>
+            </div>
+            <div class="shrink-0 text-right">
+              <p class="text-xs text-gray-400">2h ago</p>
+              <p class="text-xs text-indigo-600 group-hover:underline mt-0.5">Review →</p>
+            </div>
+          </div>
+
+          <!-- Item 2: Low-confidence extraction -->
+          <div onclick="showStep('t4', 4)" class="px-5 py-4 border-b border-gray-100 flex items-center gap-4 hover:bg-gray-50 cursor-pointer group transition-colors">
+            <span class="shrink-0 text-xs font-bold px-2.5 py-1 rounded-full bg-purple-100 text-purple-800 border border-purple-200">LOW CONF</span>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-semibold text-gray-900 group-hover:text-indigo-700 transition-colors">Contract #CT-2024-0923 · Priya Mehta / NovaSoft Ltd.</p>
+              <p class="text-xs text-gray-400 mt-0.5">2 extracted fields below 80% confidence: Payment Terms (61%), End Date (72%). Correction needed before invoices can verify.</p>
+            </div>
+            <div class="shrink-0 text-right">
+              <p class="text-xs text-gray-400">5h ago</p>
+              <p class="text-xs text-indigo-600 group-hover:underline mt-0.5">Correct →</p>
+            </div>
+          </div>
+
+          <!-- Item 3: Auto-logged override -->
+          <div onclick="showStep('t4', 6)" class="px-5 py-4 flex items-center gap-4 hover:bg-gray-50 cursor-pointer group transition-colors">
+            <span class="shrink-0 text-xs font-bold px-2.5 py-1 rounded-full bg-gray-100 text-gray-600 border border-gray-200">OVERRIDE</span>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-semibold text-gray-900 group-hover:text-indigo-700 transition-colors">Invoice #INV-2024-1139 · Dara Osei / Beacon Media</p>
+              <p class="text-xs text-gray-400 mt-0.5">Client approved a flag-hold invoice with documented reason. Auto-logged as potential false positive. No action required.</p>
+            </div>
+            <div class="shrink-0 text-right">
+              <p class="text-xs text-gray-400">Yesterday</p>
+              <p class="text-xs text-indigo-600 group-hover:underline mt-0.5">View →</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Dispute review + ops ruling -->
+      <div id="t4-step-2" class="step">
+        <div class="mb-5 flex items-center gap-3">
+          <button onclick="goToOpsQueue()" class="text-gray-400 hover:text-gray-600 transition-colors">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <div>
+            <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">Ops View · Dispute #DSP-0041</p>
+            <h2 class="text-xl font-semibold text-gray-900">Invoice #INV-2024-1148 — Amount Mismatch</h2>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-5">
+          <!-- Left: Context -->
+          <div class="col-span-2 space-y-4">
+
+            <!-- Dispute thread (read-only, full) -->
+            <div class="bg-white rounded-xl border border-gray-200 p-5">
+              <div class="flex items-center gap-2 mb-4">
+                <svg class="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                <p class="text-sm font-semibold text-gray-900">Dispute Thread</p>
+                <span class="text-xs bg-amber-50 text-amber-700 px-2 py-0.5 rounded-full border border-amber-200 font-medium">Awaiting Ops Ruling</span>
+              </div>
+              <div class="space-y-3">
+                <div class="thread-msg system">
+                  <p class="text-xs text-gray-400 mb-0.5">System · May 1, 2024 at 11:08 AM</p>
+                  <p class="text-sm text-gray-600">Dispute opened for invoice #INV-2024-1148. Flag type: <span class="font-medium">amount_deviation</span>. Claimed $14,000 exceeds contracted $11,200 by $2,800 (+25%). Ops team notified.</p>
+                </div>
+                <div class="thread-msg client">
+                  <p class="text-xs text-gray-400 mb-0.5">Meridian Digital Co. (Client) · May 1 at 11:15 AM</p>
+                  <p class="text-sm text-gray-800">The contract we signed clearly states $11,200 as the fixed fee. We did not authorize a change to $14,000. Requesting clarification before we can approve.</p>
+                </div>
+                <div class="thread-msg contractor">
+                  <p class="text-xs text-gray-400 mb-0.5">Alex Rivera (Contractor) · May 1 at 11:43 AM</p>
+                  <p class="text-sm text-gray-800">I invoiced $14,000 because the scope expanded beyond the original brief. We discussed this via email on April 3rd — Samira from your team confirmed the additional work. Happy to forward that thread. The extra $2,800 covers the additional brand guidelines document that wasn't in the original scope.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Contract extraction used to make the flag -->
+            <div class="bg-white rounded-xl border border-gray-200 p-5">
+              <div class="flex items-center justify-between mb-3">
+                <p class="text-sm font-semibold text-gray-700">Contract Extraction Used for Flag</p>
+                <span class="text-xs font-mono text-gray-400">#CT-2024-0891</span>
+              </div>
+              <table class="w-full text-sm">
+                <thead><tr class="text-gray-400 text-xs border-b border-gray-100"><th class="text-left pb-2 font-medium">Field</th><th class="text-left pb-2 font-medium">Extracted Value</th><th class="text-right pb-2 font-medium">Confidence</th></tr></thead>
+                <tbody class="divide-y divide-gray-50">
+                  <tr>
+                    <td class="py-2.5 text-gray-500 text-xs">Contract Type</td>
+                    <td class="py-2.5 text-gray-800 font-medium">Fixed-Fee</td>
+                    <td class="py-2.5 text-right"><span class="text-xs text-green-600 font-medium">99%</span></td>
+                  </tr>
+                  <tr>
+                    <td class="py-2.5 text-gray-500 text-xs">Total Amount</td>
+                    <td class="py-2.5 text-gray-800 font-medium">$11,200.00</td>
+                    <td class="py-2.5 text-right"><span class="text-xs text-green-600 font-medium">97%</span></td>
+                  </tr>
+                  <tr>
+                    <td class="py-2.5 text-gray-500 text-xs">Currency</td>
+                    <td class="py-2.5 text-gray-800 font-medium">USD</td>
+                    <td class="py-2.5 text-right"><span class="text-xs text-green-600 font-medium">99%</span></td>
+                  </tr>
+                  <tr>
+                    <td class="py-2.5 text-gray-500 text-xs">Scope</td>
+                    <td class="py-2.5 text-gray-800 font-medium">Brand Identity & Website Redesign</td>
+                    <td class="py-2.5 text-right"><span class="text-xs text-green-600 font-medium">89%</span></td>
+                  </tr>
+                  <tr>
+                    <td class="py-2.5 text-gray-500 text-xs">Milestone 1</td>
+                    <td class="py-2.5 text-gray-800 font-medium">Phase 1 — Design & Wireframes</td>
+                    <td class="py-2.5 text-right"><span class="text-xs text-green-600 font-medium">91%</span></td>
+                  </tr>
+                </tbody>
+              </table>
+              <p class="text-xs text-gray-400 mt-3">Note: No amendment record found for this contract. The extracted scope does not include brand guidelines as a deliverable.</p>
+            </div>
+          </div>
+
+          <!-- Right: Ruling panel -->
+          <div class="space-y-4">
+            <!-- Flag summary -->
+            <div class="bg-amber-50 border border-amber-200 rounded-xl p-4">
+              <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Flag Summary</p>
+              <div class="space-y-1.5 text-sm">
+                <div class="flex justify-between"><span class="text-gray-400">Flag type</span><span class="font-medium text-gray-800">amount_deviation</span></div>
+                <div class="flex justify-between"><span class="text-gray-400">Contract</span><span class="font-medium text-gray-800">$11,200</span></div>
+                <div class="flex justify-between"><span class="text-gray-400">Invoice</span><span class="font-medium text-red-600">$14,000</span></div>
+                <div class="flex justify-between"><span class="text-gray-400">Deviation</span><span class="font-medium text-red-600">+$2,800 (+25%)</span></div>
+                <div class="flex justify-between"><span class="text-gray-400">Client action</span><span class="font-medium text-gray-800">Opened dispute</span></div>
+              </div>
+            </div>
+
+            <!-- Ruling options -->
+            <div class="bg-white rounded-xl border border-gray-200 p-4">
+              <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Ops Ruling</p>
+
+              <div id="ruling-fp" onclick="selectRuling('fp')" class="border-2 border-gray-200 rounded-xl p-3.5 cursor-pointer hover:border-indigo-300 transition-colors mb-2.5">
+                <div class="flex items-start gap-2.5">
+                  <div id="ruling-fp-dot" class="w-4 h-4 rounded-full border-2 border-gray-300 mt-0.5 shrink-0 transition-colors"></div>
+                  <div>
+                    <p class="text-sm font-semibold text-gray-900">False Positive</p>
+                    <p class="text-xs text-gray-500 mt-0.5">Flag was incorrect — contractor's claim is legitimate. Will lower the sensitivity threshold for this flag type.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div id="ruling-tp" onclick="selectRuling('tp')" class="border-2 border-gray-200 rounded-xl p-3.5 cursor-pointer hover:border-red-200 transition-colors mb-3">
+                <div class="flex items-start gap-2.5">
+                  <div id="ruling-tp-dot" class="w-4 h-4 rounded-full border-2 border-gray-300 mt-0.5 shrink-0 transition-colors"></div>
+                  <div>
+                    <p class="text-sm font-semibold text-gray-900">True Positive</p>
+                    <p class="text-xs text-gray-500 mt-0.5">Flag was correct — invoice genuinely exceeds contract terms. Reinforces current threshold.</p>
+                  </div>
+                </div>
+              </div>
+
+              <p id="ruling-error" class="hidden text-xs text-red-600 mb-2">Select a ruling before submitting.</p>
+
+              <label class="block text-xs font-medium text-gray-500 mb-1.5">Notes (optional)</label>
+              <textarea id="ops-notes" rows="2" placeholder="e.g. Contractor provided email evidence of scope change on Apr 3rd. Recommend amendment workflow as fast-follow."
+                class="w-full text-xs border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300 resize-none mb-3"></textarea>
+
+              <button onclick="submitRuling()" class="w-full bg-gray-900 hover:bg-gray-800 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors">
+                Submit Ruling
+              </button>
+            </div>
+
+            <div class="bg-indigo-50 border border-indigo-100 rounded-xl p-4 text-xs text-indigo-700">
+              <p class="font-medium mb-1">Retraining impact</p>
+              <p>Your ruling is logged as a labeled training example. Thresholds for <span class="font-medium">amount_deviation / fixed-fee</span> will be recalibrated at end of quarter using accumulated rulings.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Ruling logged / training record -->
+      <div id="t4-step-3" class="step">
+        <div class="flex flex-col items-center justify-center py-12 text-center max-w-lg mx-auto">
+          <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+            <svg class="w-9 h-9 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <h2 class="text-xl font-bold text-gray-900 mb-2">Ruling Submitted</h2>
+          <p class="text-gray-500 text-sm mb-6">Training record logged. The model will incorporate this ruling during the next threshold calibration run.</p>
+
+          <!-- Training record -->
+          <div class="w-full bg-white rounded-xl border border-gray-200 text-left p-5 mb-4">
+            <div class="flex items-center gap-2 mb-4">
+              <div class="w-6 h-6 bg-indigo-100 rounded flex items-center justify-center">
+                <svg class="w-3.5 h-3.5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
+              </div>
+              <p class="text-sm font-semibold text-gray-900">Training Record #TR-0041</p>
+              <span class="ml-auto text-xs bg-green-50 text-green-700 border border-green-200 px-2 py-0.5 rounded-full font-medium">Logged</span>
+            </div>
+            <div class="space-y-2 text-sm font-mono">
+              <div class="grid grid-cols-2 gap-x-4 py-1.5 border-b border-gray-50">
+                <span class="text-gray-400">invoice</span><span class="text-gray-900">#INV-2024-1148</span>
+              </div>
+              <div class="grid grid-cols-2 gap-x-4 py-1.5 border-b border-gray-50">
+                <span class="text-gray-400">contract</span><span class="text-gray-900">#CT-2024-0891</span>
+              </div>
+              <div class="grid grid-cols-2 gap-x-4 py-1.5 border-b border-gray-50">
+                <span class="text-gray-400">flag_type</span><span class="text-gray-900">amount_deviation</span>
+              </div>
+              <div class="grid grid-cols-2 gap-x-4 py-1.5 border-b border-gray-50">
+                <span class="text-gray-400">deviation</span><span class="text-gray-900">+$2,800 (+25%)</span>
+              </div>
+              <div class="grid grid-cols-2 gap-x-4 py-1.5 border-b border-gray-50">
+                <span class="text-gray-400">contract_type</span><span class="text-gray-900">fixed_fee</span>
+              </div>
+              <div class="grid grid-cols-2 gap-x-4 py-1.5 border-b border-gray-50">
+                <span class="text-gray-400">label</span><span id="tr-label" class="text-indigo-700 font-bold">false_positive</span>
+              </div>
+              <div class="grid grid-cols-2 gap-x-4 py-1.5 border-b border-gray-50">
+                <span class="text-gray-400">training_set</span><span class="text-gray-900">training_v4_q3</span>
+              </div>
+              <div class="grid grid-cols-2 gap-x-4 py-1.5">
+                <span class="text-gray-400">logged_at</span><span class="text-gray-900">2024-05-01T11:34Z</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="w-full bg-indigo-50 border border-indigo-200 rounded-xl p-4 text-left mb-6">
+            <p class="text-xs font-semibold text-indigo-800 mb-1">Threshold calibration note</p>
+            <p class="text-xs text-indigo-700">This ruling contributes to the <span class="font-medium">amount_deviation</span> threshold for <span class="font-medium">fixed_fee</span> contracts. Current false positive rate (24%) exceeds the 15% target. When sufficient rulings accumulate, the threshold will be recalibrated at end of Q3 2024. Overrides and rulings of the same type are combined to determine the new sensitivity floor.</p>
+          </div>
+
+          <button onclick="goToOpsQueue()" class="text-sm text-indigo-600 hover:underline">Back to queue</button>
+        </div>
+      </div>
+
+      <!-- Step 4: Low-confidence extraction correction -->
+      <div id="t4-step-4" class="step">
+        <div class="mb-5 flex items-center gap-3">
+          <button onclick="goToOpsQueue()" class="text-gray-400 hover:text-gray-600 transition-colors">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <div>
+            <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">Ops View · Extraction Review</p>
+            <h2 class="text-xl font-semibold text-gray-900">Contract #CT-2024-0923 — Correct Extraction</h2>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-5">
+          <div class="col-span-2">
+            <div class="bg-white rounded-xl border border-gray-200 p-5 mb-4">
+              <div class="grid grid-cols-2 gap-4 text-sm mb-4 pb-4 border-b border-gray-100">
+                <div><span class="text-gray-400">Contractor</span><p class="font-medium text-gray-900 mt-0.5">Priya Mehta</p></div>
+                <div><span class="text-gray-400">Client</span><p class="font-medium text-gray-900 mt-0.5">NovaSoft Ltd.</p></div>
+                <div><span class="text-gray-400">Contract Type</span><p class="font-medium text-gray-900 mt-0.5">Milestone-Based</p></div>
+                <div><span class="text-gray-400">Signed</span><p class="font-medium text-gray-900 mt-0.5">Apr 28, 2024</p></div>
+              </div>
+
+              <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Extracted Fields — Correct or Confirm</p>
+              <div class="space-y-0 divide-y divide-gray-50">
+
+                <!-- High confidence — read only -->
+                <div class="flex items-center gap-4 py-3">
+                  <div class="w-36 shrink-0"><p class="text-xs text-gray-400">Contract Type</p></div>
+                  <div class="flex-1"><p class="text-sm text-gray-900 font-medium">Milestone-Based</p></div>
+                  <span class="shrink-0 text-xs text-green-600 font-semibold bg-green-50 border border-green-200 px-2 py-0.5 rounded-full">96%</span>
+                </div>
+                <div class="flex items-center gap-4 py-3">
+                  <div class="w-36 shrink-0"><p class="text-xs text-gray-400">Total Amount</p></div>
+                  <div class="flex-1"><p class="text-sm text-gray-900 font-medium">$28,500.00</p></div>
+                  <span class="shrink-0 text-xs text-green-600 font-semibold bg-green-50 border border-green-200 px-2 py-0.5 rounded-full">92%</span>
+                </div>
+                <div class="flex items-center gap-4 py-3">
+                  <div class="w-36 shrink-0"><p class="text-xs text-gray-400">Currency</p></div>
+                  <div class="flex-1"><p class="text-sm text-gray-900 font-medium">USD</p></div>
+                  <span class="shrink-0 text-xs text-green-600 font-semibold bg-green-50 border border-green-200 px-2 py-0.5 rounded-full">99%</span>
+                </div>
+                <div class="flex items-center gap-4 py-3">
+                  <div class="w-36 shrink-0"><p class="text-xs text-gray-400">Milestone 1</p></div>
+                  <div class="flex-1"><p class="text-sm text-gray-900 font-medium">MVP Development · $14,000</p></div>
+                  <span class="shrink-0 text-xs text-green-600 font-semibold bg-green-50 border border-green-200 px-2 py-0.5 rounded-full">88%</span>
+                </div>
+                <div class="flex items-center gap-4 py-3">
+                  <div class="w-36 shrink-0"><p class="text-xs text-gray-400">Milestone 2</p></div>
+                  <div class="flex-1"><p class="text-sm text-gray-900 font-medium">Beta Launch · $14,500</p></div>
+                  <span class="shrink-0 text-xs text-green-600 font-semibold bg-green-50 border border-green-200 px-2 py-0.5 rounded-full">83%</span>
+                </div>
+
+                <!-- Low confidence — editable -->
+                <div class="flex items-center gap-4 py-3 bg-amber-50 -mx-5 px-5 rounded">
+                  <div class="w-36 shrink-0">
+                    <p class="text-xs text-gray-400">Payment Terms</p>
+                    <p class="text-xs text-amber-600 font-medium mt-0.5">Needs review</p>
+                  </div>
+                  <div class="flex-1">
+                    <input id="field-payment-terms" type="text" value="Net 30 days"
+                      class="w-full text-sm border border-amber-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-amber-300 bg-white"/>
+                  </div>
+                  <span class="shrink-0 text-xs text-amber-700 font-semibold bg-amber-100 border border-amber-200 px-2 py-0.5 rounded-full">61%</span>
+                </div>
+                <div class="flex items-center gap-4 py-3 bg-amber-50 -mx-5 px-5 rounded">
+                  <div class="w-36 shrink-0">
+                    <p class="text-xs text-gray-400">End Date</p>
+                    <p class="text-xs text-amber-600 font-medium mt-0.5">Needs review</p>
+                  </div>
+                  <div class="flex-1">
+                    <input id="field-end-date" type="text" value="September 30, 2024"
+                      class="w-full text-sm border border-amber-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-amber-300 bg-white"/>
+                  </div>
+                  <span class="shrink-0 text-xs text-amber-700 font-semibold bg-amber-100 border border-amber-200 px-2 py-0.5 rounded-full">72%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <div class="bg-purple-50 border border-purple-200 rounded-xl p-4">
+              <p class="text-xs font-semibold text-purple-800 mb-2 uppercase tracking-wide">Why this matters</p>
+              <p class="text-xs text-purple-700">Invoices on this contract are marked <span class="font-medium">"not yet verifiable"</span> until all fields are confirmed. Correcting these fields unblocks verification and logs your input as labeled training data for the extraction model.</p>
+            </div>
+            <div class="bg-white rounded-xl border border-gray-200 p-4">
+              <p class="text-xs font-medium text-gray-500 mb-3">Source PDF</p>
+              <div class="flex items-center gap-2 text-xs text-indigo-600 hover:underline cursor-pointer">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                CT-2024-0923_signed.pdf
+              </div>
+            </div>
+            <button onclick="confirmExtraction()" class="w-full bg-gray-900 hover:bg-gray-800 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors">
+              Confirm & Log as Training Data
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 5: Extraction corrected -->
+      <div id="t4-step-5" class="step">
+        <div class="flex flex-col items-center justify-center py-16 text-center max-w-md mx-auto">
+          <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+            <svg class="w-9 h-9 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <h2 class="text-xl font-bold text-gray-900 mb-2">Corrections Logged</h2>
+          <p class="text-gray-500 text-sm mb-6">2 field corrections saved as labeled training data. Contract #CT-2024-0923 is now fully verified — invoices from Priya Mehta can proceed through the compliance pipeline.</p>
+          <div class="w-full bg-white rounded-xl border border-gray-200 text-left p-5 mb-4 space-y-2 text-sm font-mono">
+            <div class="grid grid-cols-2 gap-x-4 py-1.5 border-b border-gray-50">
+              <span class="text-gray-400">contract</span><span class="text-gray-900">#CT-2024-0923</span>
+            </div>
+            <div class="grid grid-cols-2 gap-x-4 py-1.5 border-b border-gray-50">
+              <span class="text-gray-400">fields_corrected</span><span class="text-gray-900">payment_terms, end_date</span>
+            </div>
+            <div class="grid grid-cols-2 gap-x-4 py-1.5 border-b border-gray-50">
+              <span class="text-gray-400">training_records</span><span class="text-indigo-700 font-bold">#TR-0042, #TR-0043</span>
+            </div>
+            <div class="grid grid-cols-2 gap-x-4 py-1.5 border-b border-gray-50">
+              <span class="text-gray-400">contract_status</span><span class="text-green-600 font-bold">verified</span>
+            </div>
+            <div class="grid grid-cols-2 gap-x-4 py-1.5">
+              <span class="text-gray-400">logged_at</span><span class="text-gray-900">2024-05-01T14:11Z</span>
+            </div>
+          </div>
+          <button onclick="goToOpsQueue()" class="text-sm text-indigo-600 hover:underline">Back to queue</button>
+        </div>
+      </div>
+
+      <!-- Step 6: Auto-logged override view -->
+      <div id="t4-step-6" class="step">
+        <div class="mb-5 flex items-center gap-3">
+          <button onclick="goToOpsQueue()" class="text-gray-400 hover:text-gray-600 transition-colors">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <div>
+            <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">Ops View · Auto-logged Override</p>
+            <h2 class="text-xl font-semibold text-gray-900">Invoice #INV-2024-1139 — Override Record</h2>
+          </div>
+        </div>
+        <div class="max-w-lg">
+          <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-4 flex items-start gap-3">
+            <svg class="w-4 h-4 text-gray-500 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <p class="text-sm text-gray-600">This item was auto-logged when a client approved a flag-hold invoice with a documented reason. No ops action is required — this record is a weak signal that contributes to false positive rate tracking.</p>
+          </div>
+          <div class="bg-white rounded-xl border border-gray-200 p-5 space-y-2 text-sm font-mono">
+            <div class="grid grid-cols-2 gap-x-4 py-1.5 border-b border-gray-50">
+              <span class="text-gray-400">invoice</span><span class="text-gray-900">#INV-2024-1139</span>
+            </div>
+            <div class="grid grid-cols-2 gap-x-4 py-1.5 border-b border-gray-50">
+              <span class="text-gray-400">contractor</span><span class="text-gray-900">Dara Osei</span>
+            </div>
+            <div class="grid grid-cols-2 gap-x-4 py-1.5 border-b border-gray-50">
+              <span class="text-gray-400">client</span><span class="text-gray-900">Beacon Media</span>
+            </div>
+            <div class="grid grid-cols-2 gap-x-4 py-1.5 border-b border-gray-50">
+              <span class="text-gray-400">flag_type</span><span class="text-gray-900">amount_deviation</span>
+            </div>
+            <div class="grid grid-cols-2 gap-x-4 py-1.5 border-b border-gray-50">
+              <span class="text-gray-400">override_reason</span><span class="text-gray-900 text-xs">"Scope confirmed by PM on Apr 28th"</span>
+            </div>
+            <div class="grid grid-cols-2 gap-x-4 py-1.5 border-b border-gray-50">
+              <span class="text-gray-400">label</span><span class="text-gray-500 italic">probable_false_positive (weak)</span>
+            </div>
+            <div class="grid grid-cols-2 gap-x-4 py-1.5">
+              <span class="text-gray-400">training_set</span><span class="text-gray-900">training_v4_q3</span>
+            </div>
+          </div>
+          <button onclick="goToOpsQueue()" class="mt-6 text-sm text-indigo-600 hover:underline">Back to queue</button>
+        </div>
+      </div>
+
+    </div>
   </main>
 
   <!-- Approve with Reason Modal -->
@@ -823,6 +1270,78 @@
       hideApproveModal();
       invoiceState.inv1148 = 'approved';
       showStep('t3', 6);
+    }
+
+    // ── Ops Tab ─────────────────────────────────────────
+    let selectedRuling = null;
+
+    function selectRuling(type) {
+      selectedRuling = type;
+      document.getElementById('ruling-error').classList.add('hidden');
+
+      const fpCard = document.getElementById('ruling-fp');
+      const tpCard = document.getElementById('ruling-tp');
+      const fpDot  = document.getElementById('ruling-fp-dot');
+      const tpDot  = document.getElementById('ruling-tp-dot');
+
+      if (type === 'fp') {
+        fpCard.classList.replace('border-gray-200', 'border-indigo-500');
+        fpCard.classList.add('bg-indigo-50');
+        fpDot.classList.replace('border-gray-300', 'border-indigo-500');
+        fpDot.style.background = '#6366f1';
+        tpCard.classList.remove('border-red-300', 'bg-red-50');
+        tpCard.className = tpCard.className.replace('border-indigo-500', 'border-gray-200').replace('bg-indigo-50', '');
+        tpCard.style.borderColor = '';
+        tpDot.style.background = '';
+        tpDot.className = tpDot.className.replace('border-red-500', 'border-gray-300').replace('border-indigo-500', 'border-gray-300');
+      } else {
+        tpCard.style.borderColor = '#ef4444';
+        tpCard.classList.add('bg-red-50');
+        tpDot.style.borderColor = '#ef4444';
+        tpDot.style.background = '#ef4444';
+        fpCard.classList.remove('border-indigo-500', 'bg-indigo-50');
+        fpCard.style.borderColor = '';
+        fpDot.style.background = '';
+        fpDot.style.borderColor = '';
+        fpDot.className = 'w-4 h-4 rounded-full border-2 border-gray-300 mt-0.5 shrink-0 transition-colors';
+      }
+    }
+
+    function submitRuling() {
+      if (!selectedRuling) {
+        document.getElementById('ruling-error').classList.remove('hidden');
+        return;
+      }
+      const label = selectedRuling === 'fp' ? 'false_positive' : 'true_positive';
+      document.getElementById('tr-label').textContent = label;
+      showStep('t4', 3);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function goToOpsQueue() {
+      selectedRuling = null;
+      // reset ruling UI
+      const fpCard = document.getElementById('ruling-fp');
+      const tpCard = document.getElementById('ruling-tp');
+      const fpDot  = document.getElementById('ruling-fp-dot');
+      const tpDot  = document.getElementById('ruling-tp-dot');
+      if (fpCard) {
+        fpCard.style.borderColor = ''; fpCard.classList.remove('bg-indigo-50', 'border-indigo-500');
+        tpCard.style.borderColor = ''; tpCard.classList.remove('bg-red-50');
+        fpDot.style.background = ''; fpDot.style.borderColor = '';
+        tpDot.style.background = ''; tpDot.style.borderColor = '';
+        fpDot.className = 'w-4 h-4 rounded-full border-2 border-gray-300 mt-0.5 shrink-0 transition-colors';
+        tpDot.className = 'w-4 h-4 rounded-full border-2 border-gray-300 mt-0.5 shrink-0 transition-colors';
+      }
+      const notes = document.getElementById('ops-notes');
+      if (notes) notes.value = '';
+      showStep('t4', 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function confirmExtraction() {
+      showStep('t4', 5);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   </script>
 </body>
